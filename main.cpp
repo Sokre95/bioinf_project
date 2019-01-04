@@ -14,8 +14,9 @@ int main() {
         std::cout << s->getDescription() << std::endl;
 
         for (int j = 0; j < s->getSequence().size(); ++j) {
-            std::cout << s->getSequence().at(j) << std::endl;
+            std::cout << s->getSequence().at(j) << std::flush;
         }
+        std::cout << std::endl << std::endl;
     }
 
     return 0;

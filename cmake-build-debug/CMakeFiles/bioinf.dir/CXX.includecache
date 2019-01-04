@@ -6,14 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/coki/CLionProjects/bioinf/FastaParser.cpp
-fstream
--
-iostream
--
-FastaParser.h
-/home/coki/CLionProjects/bioinf/FastaParser.h
-
 /home/coki/CLionProjects/bioinf/FastaParser.h
 Sequence.h
 /home/coki/CLionProjects/bioinf/Sequence.h
@@ -23,4 +15,12 @@ string
 -
 vector
 -
+
+/home/coki/CLionProjects/bioinf/main.cpp
+iostream
+-
+fstream
+-
+FastaParser.h
+/home/coki/CLionProjects/bioinf/FastaParser.h
 
