@@ -32,8 +32,8 @@ end
 
 sequence_pairs.each_with_index do |pair, index|
   f = File.open("../database/pairs/p#{index+1}.fasta", "w")
-  f.puts(pair[:entry1][:definition])
+  f.puts(">" + pair[:entry1][:definition])
   f.puts(pair[:entry1][:sequence])
-  f.puts(pair[:entry2][:definition])
+  f.puts(">" + pair[:entry2][:definition])
   f.puts(pair[:entry2][:sequence])
 end
