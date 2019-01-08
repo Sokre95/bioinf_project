@@ -34,6 +34,14 @@ public:
         this->_lookupTable.insert(std::pair<char, int>('t', 1));
         this->_lookupTable.insert(std::pair<char, int>('e', 2));
     }
+
+private:
+    float max(float v1, float v2, char first, char second, char* result);
+    float max(float m, float x, float y, char* result);
+
+    const char M = 1;
+    const char X = 2;
+    const char Y = 3;
 };
 
 

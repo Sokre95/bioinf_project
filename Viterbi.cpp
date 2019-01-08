@@ -3,7 +3,7 @@
 
 typedef unsigned long ulong;
 
-float Viterbi::max(float v1, float v2, char first, char second, char* result) {
+float IViterbi::max(float v1, float v2, char first, char second, char* result) {
     if (v1 > v2) {
         *result = first;
         return v1;
@@ -13,7 +13,7 @@ float Viterbi::max(float v1, float v2, char first, char second, char* result) {
     return v2;
 }
 
-float Viterbi::max(float m, float x, float y, char* result) {
+float IViterbi::max(float m, float x, float y, char* result) {
     float max = this->max(m, x, M, X, result);
 
     if (max < y) {
@@ -24,7 +24,7 @@ float Viterbi::max(float m, float x, float y, char* result) {
     return max;
 }
 
-void Viterbi::alignSequences(Sequence &first, Sequence &second) {
+void IViterbi::alignSequences(Sequence &first, Sequence &second) {
     const std::vector<char> &first_sequence = first.getSequence();
     const std::vector<char> &second_sequence = second.getSequence();
 
