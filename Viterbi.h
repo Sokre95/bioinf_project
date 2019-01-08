@@ -18,6 +18,10 @@ public:
     std::string alignSequences(Sequence &first, Sequence &second) override;
 
     Viterbi(const double *transition_probabilities,const double **emission_probabilities);
+
+private:
+    float max(float v1, float v2);
+    float max(float v1, float v2, float v3);
 };
 
 

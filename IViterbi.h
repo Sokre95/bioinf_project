@@ -12,15 +12,15 @@
 class IViterbi {
 
 protected:
-    const double *transition_probabilities;
-    const double **emission_probabilities;
+    const float *transition_probabilities;
+    const float **emission_probabilities;
     std::map<char, int> _lookupTable;
 
 public:
     // pure virtual function providing interface framework.
     virtual std::string alignSequences(Sequence &first, Sequence &second) = 0;
 
-    IViterbi(const double *transition_probabilities, const double **emission_probabilities) : transition_probabilities(
+    IViterbi(const float *transition_probabilities, const float **emission_probabilities) : transition_probabilities(
             transition_probabilities), emission_probabilities(emission_probabilities) {
 
         this->_lookupTable.insert(std::pair<char, int>('A', 0));
@@ -34,7 +34,6 @@ public:
         this->_lookupTable.insert(std::pair<char, int>('t', 1));
         this->_lookupTable.insert(std::pair<char, int>('e', 2));
     }
-
 };
 
 
