@@ -3,7 +3,7 @@
 
 typedef unsigned long ulong;
 
-float IViterbi::max(float v1, float v2, char first, char second, char* result) {
+float IViterbi::max(float v1, float v2, byte first, byte second, byte* result) {
     if (v1 > v2) {
         *result = first;
         return v1;
@@ -13,7 +13,7 @@ float IViterbi::max(float v1, float v2, char first, char second, char* result) {
     return v2;
 }
 
-float IViterbi::max(float m, float x, float y, char* result) {
+float IViterbi::max(float m, float x, float y, byte* result) {
     float max = this->max(m, x, M, X, result);
 
     if (max < y) {
@@ -46,11 +46,15 @@ void IViterbi::alignSequences(Sequence &first, Sequence &second) {
     const float epsilon = transition_probabilities[_lookupTable.at('e')];
 
     // ovdje zapisujemo prijelaze za sva stanja koja cemo koristiti u backtracku
-    char transitions_m[n][m];
-    char transitions_x[n][m];
-    char transitions_y[n][m];
+    byte transitions_m[n][m];
+    byte transitions_x[n][m];
+    byte transitions_y[n][m];
 
-    char previous;
+    memset(transitions_m, 0, sizeof(char) * n * m);
+    memset(transitions_x, 0, sizeof(char) * n * m);
+    memset(transitions_y, 0, sizeof(char) * n * m);
+
+    byte previous;
 
     // spremanje medurezultata prethodnog koraka
     for (ulong i = 0; i < n; i++) {
@@ -119,7 +123,7 @@ void IViterbi::alignSequences(Sequence &first, Sequence &second) {
     }
 
     // svako slovo mapira se na prvi element 2D polja
-    std::map<char, char*> transitions_lookup = {
+    std::map<byte, byte*> transitions_lookup = {
             {M, transitions_m[0]},
             {X, transitions_x[0]},
             {Y, transitions_y[0]}
@@ -136,7 +140,7 @@ void IViterbi::alignSequences(Sequence &first, Sequence &second) {
     float vy = viterbi_insert_y[m - 1];
 
     // pokazivac na ispravno polje
-    char* trans;
+    byte* trans;
 
     // indeksi po kojima idemo algoritmom backtrack
     ulong i = n - 1;

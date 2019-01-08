@@ -5,6 +5,7 @@
 #ifndef BIOINF_IVITERBI_H
 #define BIOINF_IVITERBI_H
 
+typedef unsigned char byte;
 
 #include <string>
 #include "Sequence.h"
@@ -36,12 +37,12 @@ public:
     }
 
 private:
-    float max(float v1, float v2, char first, char second, char* result);
-    float max(float m, float x, float y, char* result);
+    float max(float v1, float v2, byte first, byte second, byte* result);
+    float max(float m, float x, float y, byte* result);
 
-    const char M = 1;
-    const char X = 2;
-    const char Y = 3;
+    byte M = 1;
+    byte X = 2;
+    byte Y = 3;
 };
 
 

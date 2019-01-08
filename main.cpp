@@ -4,7 +4,8 @@
 #include "FastaParser.h"
 
 int main() {
-    FastaParser parser("../files/sample.txt");
+
+    FastaParser parser("../database/pairs/p1.fasta");
 
     const std::vector<Sequence *> sequences = parser.parse();
 
