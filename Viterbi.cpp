@@ -2,6 +2,7 @@
 // Created by tomo on 1/8/19.
 //
 
+#include <cstring>
 #include "Viterbi.h"
 
 std::string Viterbi::alignSequences(Sequence &first, Sequence &second) {
@@ -16,6 +17,8 @@ std::string Viterbi::alignSequences(Sequence &first, Sequence &second) {
     double viterbi_insert_y[n][m];
 
     viterbi_match[0][0] = 1;
+    memset(viterbi_insert_x, 0, sizeof(viterbi_insert_x[0][0]) * n * m);
+    memset(viterbi_insert_y, 0, sizeof(viterbi_insert_y[0][0]) * n * m);
 
     std::vector<char> states;
 
