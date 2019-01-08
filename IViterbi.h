@@ -20,8 +20,7 @@ public:
     // pure virtual function providing interface framework.
     virtual std::string alignSequences(Sequence &first, Sequence &second) = 0;
 
-    explicit
-    IViterbi(const double *transition_probabilities,const  double **emission_probabilities) : transition_probabilities(
+    IViterbi(const double *transition_probabilities, const double **emission_probabilities) : transition_probabilities(
             transition_probabilities), emission_probabilities(emission_probabilities) {
 
         this->_lookupTable.insert(std::pair<char, int>('A', 0));

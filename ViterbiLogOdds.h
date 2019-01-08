@@ -16,7 +16,7 @@ public:
 
     std::string alignSequences(Sequence &first, Sequence &second) override;
 
-    ViterbiLogOdds(const double *transition_probabilities,const double **emission_probabilities, const double eta);
+    ViterbiLogOdds(const double *transition_probabilities, const double **emission_probabilities, double eta);
 };
 
 
