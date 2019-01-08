@@ -3,28 +3,34 @@
 
 typedef unsigned long ulong;
 
-float Viterbi::max(float v1, float v2) {
-    if (v1 > v2) return v1;
+float Viterbi::max(float v1, float v2, char first, char second, char* result) {
+    if (v1 > v2) {
+        *result = first;
+        return v1;
+    }
+
+    *result = second;
     return v2;
 }
 
-float Viterbi::max(float v1, float v2, float v3) {
-    float max = v1;
-    if (v2 > max) max = v2;
-    if (v3 > max) max = v3;
+float Viterbi::max(float m, float x, float y, char* result) {
+    float max = this->max(m, x, M, X, result);
+
+    if (max < y) {
+        *result = Y;
+        return y;
+    }
+
     return max;
 }
 
-std::string Viterbi::alignSequences(Sequence &first, Sequence &second) {
-    std::vector<char> states;
-
+void Viterbi::alignSequences(Sequence &first, Sequence &second) {
     const std::vector<char> &first_sequence = first.getSequence();
     const std::vector<char> &second_sequence = second.getSequence();
 
     ulong n = first_sequence.size();
     ulong m = second_sequence.size();
 
-    // trenutna pomocna polja
     float* viterbi_match = new float[m];
     float* viterbi_insert_x = new float[m];
     float* viterbi_insert_y = new float[m];
@@ -35,9 +41,16 @@ std::string Viterbi::alignSequences(Sequence &first, Sequence &second) {
 
     viterbi_match[0] = 1;
 
-    const double tau = transition_probabilities[_lookupTable.at('t')];
-    const double delta = transition_probabilities[_lookupTable.at('d')];
-    const double epsilon = transition_probabilities[_lookupTable.at('e')];
+    const float tau = transition_probabilities[_lookupTable.at('t')];
+    const float delta = transition_probabilities[_lookupTable.at('d')];
+    const float epsilon = transition_probabilities[_lookupTable.at('e')];
+
+    // ovdje zapisujemo prijelaze za sva stanja koja cemo koristiti u backtracku
+    char transitions_m[n][m];
+    char transitions_x[n][m];
+    char transitions_y[n][m];
+
+    char previous;
 
     // spremanje medurezultata prethodnog koraka
     for (ulong i = 0; i < n; i++) {
@@ -54,16 +67,19 @@ std::string Viterbi::alignSequences(Sequence &first, Sequence &second) {
         tmp_m[0] = emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at(
                 second_sequence.at(0))] * (1 - 2*delta - tau) * viterbi_match[0];
 
+        transitions_m[i][0] = M;
+
         v1 = delta * viterbi_match[0];
         v2 = epsilon * viterbi_insert_x[0];
-        max = this->max(v1, v2);
+        max = this->max(v1, v2, M, X, &previous);
 
         tmp_x[0] = emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at('-')] * max;
+        transitions_x[i][0] = previous;
 
         tmp_y[0] = 0; // za j = 1 ovo je uvijek nula prema pretpostavci
+        transitions_y[i][0] = M;
 
         for (ulong j = 1; j < m; j++) {
-
             // moramo vidjet sta cemo dalje zapisati u tmp polja, i sta cemo koristiti za racunanje
 
             // ovo sve uzimamo iz prethodne iteracije zbog (i - 1) u formuli
@@ -71,22 +87,24 @@ std::string Viterbi::alignSequences(Sequence &first, Sequence &second) {
             v2 = (1 - epsilon - tau) * viterbi_insert_x[j - 1];
             v3 = (1 - epsilon - tau) * viterbi_insert_y[j - 1];
 
-            max = this->max(v1, v2, v3); // pronademo max
+            max = this->max(v1, v2, v3, &previous); // pronademo max
 
             tmp_m[j] = emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at(second_sequence.at(j))] * max;
+            transitions_m[i][j] = previous;
 
             v1 = delta * viterbi_match[j];
             v2 = epsilon * viterbi_insert_x[j];
 
-            max = this->max(v1, v2);
+            max = this->max(v1, v2, M, X, &previous);
             tmp_x[j] = emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at('-')] * max;
-
+            transitions_x[i][j] = previous;
 
             v1 = delta * tmp_m[j - 1];
             v2 = epsilon * tmp_y[j - 1];
-            max = this->max(v1, v2);
+            max = this->max(v1, v2, M, Y, &previous);
 
             tmp_y[j] = emission_probabilities[_lookupTable.at('-')][_lookupTable.at(second_sequence.at(j))] * max;
+            transitions_y[i][j] = previous;
         }
 
         // izbrisi memoriju koju su zauzela stara polja
@@ -98,44 +116,69 @@ std::string Viterbi::alignSequences(Sequence &first, Sequence &second) {
         viterbi_match = tmp_m;
         viterbi_insert_x = tmp_x;
         viterbi_insert_y = tmp_y;
-
-        tmp_m = NULL;
-        tmp_x = NULL;
-        tmp_y = NULL;
     }
 
+    // svako slovo mapira se na prvi element 2D polja
+    std::map<char, char*> transitions_lookup = {
+            {M, transitions_m[0]},
+            {X, transitions_x[0]},
+            {Y, transitions_y[0]}
+    };
 
-    // Stari kod koji nije bas najbrzi
-    /*for (unsigned long i = 0; i < n; i++) {
-        for (unsigned long j = 0; j < m; j++) {
+    // ovdje cemo zapisivat poravnanja
+    std::vector<std::tuple<char, char>> aligned;
 
-            double temp = (1 - epsilon - tau);
-            double max = std::max((1 - 2 * delta - tau) * viterbi_match[i - 1][j - 1],
-                                  temp * viterbi_insert_x[i - 1][j - 1]);
+    // kad izademo iz petlji, u poljima na zadnjem mjestu ce biti vjerojatnoti svakog stanja
+    // za vrijednosti n i m te od tuda zapocinjemo backtrack
 
-            max = std::max(max, temp * viterbi_insert_y[i - 1][j - 1]);
+    float vm = viterbi_match[m - 1];
+    float vx = viterbi_insert_x[m - 1];
+    float vy = viterbi_insert_y[m - 1];
 
-            viterbi_match[i][j] = emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at(
-                    second_sequence.at(j))] * max;
+    // pokazivac na ispravno polje
+    char* trans;
 
-            viterbi_insert_x[i][j] =
-                    emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at('-')] *
-                    std::max(delta * viterbi_match[i - 1][j], epsilon * viterbi_insert_x[i - 1][j]);
+    // indeksi po kojima idemo algoritmom backtrack
+    ulong i = n - 1;
+    ulong j = m - 1;
 
-            viterbi_insert_y[i][j] =
-                    emission_probabilities[_lookupTable.at('-')][_lookupTable.at(second_sequence.at(j))] *
-                    std::max(delta * viterbi_match[i][j - 1], epsilon * viterbi_insert_y[i][j - 1]);
+    if (vm > vx && vm > vy) {
+        trans = transitions_m[0];
+    } else if (vx > vm && vx > vy) {
+        trans = transitions_x[0];
+    } else {
+        trans = transitions_y[0];
+    }
+
+    // ove dolje korake moramo ponavljat sve dok ne dobijemo ukupnu sekvencu stanja
+    while (i > 0 && j > 0) {
+        // dohvati vrijednost polja
+        char state = *(trans + i * n + j);
+
+        // iz nekog razloga mi switch neda da koristim M,X,Y
+        // ovisno o stanju radimo odma poravnanje
+        switch (state) {
+            case 1: // M
+                aligned.push_back(std::make_tuple(first_sequence.at(i), second_sequence.at(j)));
+
+                j = j - 1;
+                i = i - 1;
+                break;
+            case 2: // X --> emitira stanje xi,-
+                aligned.push_back(std::make_tuple(first_sequence.at(i), '-'));
+                i = i - 1;
+                break;
+            case 3: // Y --> emitira stanje -,yj
+                aligned.push_back(std::make_tuple('-', second_sequence.at(j)));
+                j = j - 1;
+                break;
         }
-    }*/
 
-
-    //TODO
-    return "max probable path";
-
-
+        trans = transitions_lookup[state]; // iz onoga sta je zapisano u polju odredujemo sljedecu tablicu
+    }
 }
 
-Viterbi::Viterbi(const double *transition_probabilities, const double **emission_probabilities) : IViterbi(
+Viterbi::Viterbi(const float *transition_probabilities, const float **emission_probabilities) : IViterbi(
         transition_probabilities,
         emission_probabilities) {}
 

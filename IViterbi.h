@@ -18,7 +18,7 @@ protected:
 
 public:
     // pure virtual function providing interface framework.
-    virtual std::string alignSequences(Sequence &first, Sequence &second) = 0;
+    virtual void alignSequences(Sequence &first, Sequence &second) = 0;
 
     IViterbi(const float *transition_probabilities, const float **emission_probabilities) : transition_probabilities(
             transition_probabilities), emission_probabilities(emission_probabilities) {
