@@ -9,16 +9,15 @@
 #include <string>
 #include <map>
 #include "Sequence.h"
+#include "IViterbi.h"
 
-class Viterbi {
-    std::map<char, int> _lookupTable;
-    double *transition_probabilities;
-    double **emission_probabilities;
+class Viterbi : public IViterbi {
 
 public:
-    std::string alignSequences(Sequence &first, Sequence &second);
 
-    Viterbi(double *transition_probabilities, double **emission_probabilities);
+    std::string alignSequences(Sequence &first, Sequence &second) override;
+
+    Viterbi(const double *transition_probabilities,const double **emission_probabilities);
 };
 
 

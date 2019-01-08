@@ -6,8 +6,8 @@
 #include "Viterbi.h"
 
 std::string Viterbi::alignSequences(Sequence &first, Sequence &second) {
-    std::vector<char> first_sequence = first.getSequence();
-    std::vector<char> second_sequence = second.getSequence();
+    const std::vector<char> &first_sequence = first.getSequence();
+    const std::vector<char> &second_sequence = second.getSequence();
 
     unsigned long n = first_sequence.size();
     unsigned long m = second_sequence.size();
@@ -16,15 +16,19 @@ std::string Viterbi::alignSequences(Sequence &first, Sequence &second) {
     double viterbi_insert_x[n][m];
     double viterbi_insert_y[n][m];
 
-    viterbi_match[0][0] = 1;
+
     memset(viterbi_insert_x, 0, sizeof(viterbi_insert_x[0][0]) * n * m);
     memset(viterbi_insert_y, 0, sizeof(viterbi_insert_y[0][0]) * n * m);
+    memset(viterbi_insert_x, 0, sizeof(viterbi_insert_x[0][0]) * n * m);
+    memset(viterbi_match, 0, sizeof(viterbi_insert_y[0][0]) * n * m);
+
+    viterbi_match[0][0] = 1;
 
     std::vector<char> states;
 
-    double tau = transition_probabilities[_lookupTable.at('t')];
-    double delta = transition_probabilities[_lookupTable.at('d')];
-    double epsilon = transition_probabilities[_lookupTable.at('e')];
+    const double tau = transition_probabilities[_lookupTable.at('t')];
+    const double delta = transition_probabilities[_lookupTable.at('d')];
+    const double epsilon = transition_probabilities[_lookupTable.at('e')];
 
     for (unsigned long i = 0; i < n; i++) {
         for (unsigned long j = 0; j < m; j++) {
@@ -53,20 +57,7 @@ std::string Viterbi::alignSequences(Sequence &first, Sequence &second) {
 
 }
 
-Viterbi::Viterbi(double *transition_probabilities, double **emission_probabilities) {
-    this->emission_probabilities = emission_probabilities;
-    this->transition_probabilities = transition_probabilities;
-
-    this->_lookupTable.insert(std::pair<char, int>('A', 0));
-    this->_lookupTable.insert(std::pair<char, int>('C', 1));
-    this->_lookupTable.insert(std::pair<char, int>('G', 2));
-    this->_lookupTable.insert(std::pair<char, int>('T', 3));
-    this->_lookupTable.insert(std::pair<char, int>('-', 4));
-
-
-    this->_lookupTable.insert(std::pair<char, int>('d', 0));
-    this->_lookupTable.insert(std::pair<char, int>('t', 1));
-    this->_lookupTable.insert(std::pair<char, int>('e', 2));
-
-}
+Viterbi::Viterbi(const double *transition_probabilities, const double **emission_probabilities) : IViterbi(
+        transition_probabilities,
+        emission_probabilities) {}
 
