@@ -13,16 +13,18 @@ typedef unsigned char byte;
 class IViterbi {
 
 protected:
-    const float *transition_probabilities;
-    const float **emission_probabilities;
+    const float (&emission_probabilities)[5][5];
+    const float (&trans_prob)[3][3];
+
     std::map<char, int> _lookupTable;
 
 public:
     // pure virtual function providing interface framework.
-    virtual void alignSequences(Sequence &first, Sequence &second) = 0;
+    virtual void alignSequences(Sequence *first, Sequence *second) = 0;
 
-    IViterbi(const float *transition_probabilities, const float **emission_probabilities) : transition_probabilities(
-            transition_probabilities), emission_probabilities(emission_probabilities) {
+    IViterbi(const float (&emission_probabilities)[5][5], const float (&trans_prob)[3][3]) :
+    emission_probabilities(emission_probabilities),
+    trans_prob(trans_prob) {
 
         this->_lookupTable.insert(std::pair<char, int>('A', 0));
         this->_lookupTable.insert(std::pair<char, int>('C', 1));
@@ -36,7 +38,7 @@ public:
         this->_lookupTable.insert(std::pair<char, int>('e', 2));
     }
 
-private:
+protected:
     float max(float v1, float v2, byte first, byte second, byte* result);
     float max(float m, float x, float y, byte* result);
 

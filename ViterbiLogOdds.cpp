@@ -6,9 +6,9 @@
 #include <cmath>
 #include <limits>
 
-std::string ViterbiLogOdds::alignSequences(Sequence &first, Sequence &second) {
-    const std::vector<char> &first_sequence = first.getSequence();
-    const std::vector<char> &second_sequence = second.getSequence();
+void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
+    const std::vector<char> &first_sequence = first->getSequence();
+    const std::vector<char> &second_sequence = second->getSequence();
 
     unsigned long n = first_sequence.size();
     unsigned long m = second_sequence.size();
@@ -35,9 +35,9 @@ std::string ViterbiLogOdds::alignSequences(Sequence &first, Sequence &second) {
     }
 
 
-    const double tau = transition_probabilities[_lookupTable.at('t')];
-    const double delta = transition_probabilities[_lookupTable.at('d')];
-    const double epsilon = transition_probabilities[_lookupTable.at('e')];
+    const double tau = 0;// transition_probabilities[_lookupTable.at('t')];
+    const double delta = 0;// transition_probabilities[_lookupTable.at('d')];
+    const double epsilon = 0;// transition_probabilities[_lookupTable.at('e')];
 
     const double termination_constant_c = log(1 - 2 * delta - tau) - log(1 - epsilon - tau);
 
@@ -54,7 +54,7 @@ std::string ViterbiLogOdds::alignSequences(Sequence &first, Sequence &second) {
                         second_sequence.at(j - 1))] /
                                (emission_probabilities[_lookupTable.at(first_sequence.at(i - 1))][_lookupTable.at(
                                        '-')] *
-                                emission_probabilities[_lookupTable.at('-')][_lookupTable.at(
+                                       emission_probabilities[_lookupTable.at('-')][_lookupTable.at(
                                         second_sequence.at(j - 1))])) +
                            log((1 - 2 * delta - tau) / ((1 - eta) * (1 - eta)));
 
@@ -71,7 +71,6 @@ std::string ViterbiLogOdds::alignSequences(Sequence &first, Sequence &second) {
 }
 
 
-ViterbiLogOdds::ViterbiLogOdds(const double *transition_probabilities, const double **emission_probabilities,
+ViterbiLogOdds::ViterbiLogOdds(const float (&emission_probabilities)[5][5], const float (&trans_prob)[3][3],
                                const double eta)
-        : IViterbi(
-        transition_probabilities, emission_probabilities), eta(eta) {}
+        : IViterbi(emission_probabilities, trans_prob), eta(eta) {}

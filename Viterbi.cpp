@@ -1,5 +1,7 @@
 #include <cstring>
+#include <iostream>
 #include "Viterbi.h"
+#include "FastaParser.h"
 
 typedef unsigned long ulong;
 
@@ -24,57 +26,101 @@ float IViterbi::max(float m, float x, float y, byte* result) {
     return max;
 }
 
-void IViterbi::alignSequences(Sequence &first, Sequence &second) {
-    const std::vector<char> &first_sequence = first.getSequence();
-    const std::vector<char> &second_sequence = second.getSequence();
+void Viterbi::alignSequences(Sequence *first, Sequence *second) {
+
+    FastaParser parser("../database/pairs/p1.fasta");
+
+    const std::vector<Sequence*> sequences = parser.parse();
+
+    for (int i = 0; i < sequences.size(); ++i) {
+        Sequence *s = sequences.at(i);
+
+        std::cout << s->getDescription() << std::endl;
+
+        for (int j = 0; j < s->getSequence().size(); ++j) {
+            std::cout << s->getSequence().at(j) << std::flush;
+        }
+        std::cout << std::endl << std::endl;
+    }
+
+    const float transmission_prob[3][3] = {
+            { 0.889107, 0.001361, 0.001663 },
+            { 0.001361, 0.000983, 0 },
+            { 0.004233, 0, 0.050042 }
+    };
+
+
+
+
+    std::vector<char> first_sequence = sequences.at(0)->getSequence();
+    std::vector<char> second_sequence = sequences.at(1)->getSequence();
+
+    char val = second_sequence.at(0);
 
     ulong n = first_sequence.size();
     ulong m = second_sequence.size();
 
-    float* viterbi_match = new float[m];
-    float* viterbi_insert_x = new float[m];
-    float* viterbi_insert_y = new float[m];
+    float viterbi_match[m];
+    float viterbi_insert_x[m];
+    float viterbi_insert_y[m];
 
+    memset(viterbi_match, 0, sizeof(float) * m);
     memset(viterbi_insert_x, 0, sizeof(float) * m);
     memset(viterbi_insert_y, 0, sizeof(float) * m);
-    memset(viterbi_match, 0, sizeof(float) * m);
 
     viterbi_match[0] = 1;
 
-    const float tau = transition_probabilities[_lookupTable.at('t')];
-    const float delta = transition_probabilities[_lookupTable.at('d')];
-    const float epsilon = transition_probabilities[_lookupTable.at('e')];
+    // const float tau = transition_probabilities[_lookupTable.at('t')];
+    // const float delta = transition_probabilities[_lookupTable.at('d')];
+    // const float epsilon = transition_probabilities[_lookupTable.at('e')];
 
     // ovdje zapisujemo prijelaze za sva stanja koja cemo koristiti u backtracku
     byte transitions_m[n][m];
     byte transitions_x[n][m];
     byte transitions_y[n][m];
 
-    memset(transitions_m, 0, sizeof(char) * n * m);
-    memset(transitions_x, 0, sizeof(char) * n * m);
-    memset(transitions_y, 0, sizeof(char) * n * m);
+    // memset(transitions_m, 0, sizeof(char) * n * m);
+    // memset(transitions_x, 0, sizeof(char) * n * m);
+    // memset(transitions_y, 0, sizeof(char) * n * m);
 
     byte previous;
 
     // spremanje medurezultata prethodnog koraka
     for (ulong i = 0; i < n; i++) {
-        float* tmp_m = new float[m];
-        float* tmp_x = new float[m];
-        float* tmp_y = new float[m];
+
+        float tmp_m[m];
+        float tmp_x[m];
+        float tmp_y[m];
+
+        // memset(tmp_m, 0, sizeof(float) * m);
+        // memset(tmp_x, 0, sizeof(float) * m);
+        // memset(tmp_y, 0, sizeof(float) * m);
+
+
+        // float* tmp_m = new float[m];
+        // float* tmp_x = new float[m];
+        // float* tmp_y = new float[m];
 
         float v1, v2, v3, max;
 
-        memset(viterbi_insert_x, 0, sizeof(float) * m);
-        memset(viterbi_insert_y, 0, sizeof(float) * m);
-        memset(viterbi_match, 0, sizeof(float) * m);
 
-        tmp_m[0] = emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at(
-                second_sequence.at(0))] * (1 - 2*delta - tau) * viterbi_match[0];
+        const float v = transmission_prob[0][0];
+
+        char c2 = second_sequence.at(0);
+        char c1 = first_sequence.at(i);
+
+
+        int pos1 = _lookupTable.at(first_sequence.at(i));
+        int pos2 = _lookupTable.at(second_sequence.at(0));
+
+        float prob = emission_probabilities[pos1][pos2];
+
+        tmp_m[0] = prob * v * viterbi_match[0];  // prijelaz iz M u M
 
         transitions_m[i][0] = M;
 
-        v1 = delta * viterbi_match[0];
-        v2 = epsilon * viterbi_insert_x[0];
+        v1 = transmission_prob[0][1] * viterbi_match[0]; // iz M u X
+        v2 = transmission_prob[1][1] * viterbi_insert_x[0]; // iz X u X
         max = this->max(v1, v2, M, X, &previous);
 
         tmp_x[0] = emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at('-')] * max;
@@ -87,24 +133,24 @@ void IViterbi::alignSequences(Sequence &first, Sequence &second) {
             // moramo vidjet sta cemo dalje zapisati u tmp polja, i sta cemo koristiti za racunanje
 
             // ovo sve uzimamo iz prethodne iteracije zbog (i - 1) u formuli
-            v1 = (1 - 2 * delta - tau) * viterbi_match[j - 1];
-            v2 = (1 - epsilon - tau) * viterbi_insert_x[j - 1];
-            v3 = (1 - epsilon - tau) * viterbi_insert_y[j - 1];
+            v1 = transmission_prob[0][0] * viterbi_match[j - 1]; // iz M u M
+            v2 = transmission_prob[1][0] * viterbi_insert_x[j - 1]; // iz X u M
+            v3 = transmission_prob[2][0] * viterbi_insert_y[j - 1]; // iz Y u M
 
             max = this->max(v1, v2, v3, &previous); // pronademo max
 
             tmp_m[j] = emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at(second_sequence.at(j))] * max;
             transitions_m[i][j] = previous;
 
-            v1 = delta * viterbi_match[j];
-            v2 = epsilon * viterbi_insert_x[j];
+            v1 = transmission_prob[0][1] * viterbi_match[j]; // iz M u X
+            v2 = transmission_prob[1][1] * viterbi_insert_x[j]; // iz X u X
 
             max = this->max(v1, v2, M, X, &previous);
             tmp_x[j] = emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at('-')] * max;
             transitions_x[i][j] = previous;
 
-            v1 = delta * tmp_m[j - 1];
-            v2 = epsilon * tmp_y[j - 1];
+            v1 = transmission_prob[0][2] * tmp_m[j - 1]; // iz M u Y
+            v2 = transmission_prob[2][2] * tmp_y[j - 1]; // iz Y u Y
             max = this->max(v1, v2, M, Y, &previous);
 
             tmp_y[j] = emission_probabilities[_lookupTable.at('-')][_lookupTable.at(second_sequence.at(j))] * max;
@@ -112,14 +158,14 @@ void IViterbi::alignSequences(Sequence &first, Sequence &second) {
         }
 
         // izbrisi memoriju koju su zauzela stara polja
-        delete [] viterbi_match;
-        delete [] viterbi_insert_x;
-        delete [] viterbi_insert_y;
+        //delete [] viterbi_match;
+        //delete [] viterbi_insert_x;
+        //delete [] viterbi_insert_y;
 
         // zamijeni polja
-        viterbi_match = tmp_m;
-        viterbi_insert_x = tmp_x;
-        viterbi_insert_y = tmp_y;
+        //viterbi_match = tmp_m;
+        //viterbi_insert_x = tmp_x;
+        //viterbi_insert_y = tmp_y;
     }
 
     // svako slovo mapira se na prvi element 2D polja
@@ -180,9 +226,10 @@ void IViterbi::alignSequences(Sequence &first, Sequence &second) {
 
         trans = transitions_lookup[state]; // iz onoga sta je zapisano u polju odredujemo sljedecu tablicu
     }
+
+    // delete [] viterbi_match;
+    // delete [] viterbi_insert_x;
+    // delete [] viterbi_insert_y;
 }
 
-Viterbi::Viterbi(const float *transition_probabilities, const float **emission_probabilities) : IViterbi(
-        transition_probabilities,
-        emission_probabilities) {}
-
+Viterbi::Viterbi(const float (&emission_probabilities)[5][5], const float (&trans_prob)[3][3]): IViterbi(emission_probabilities, trans_prob) {}

@@ -14,9 +14,9 @@ class ViterbiLogOdds : public IViterbi {
 
 public:
 
-    std::string alignSequences(Sequence &first, Sequence &second) override;
+    void alignSequences(Sequence *first, Sequence *second) override;
 
-    ViterbiLogOdds(const double *transition_probabilities, const double **emission_probabilities, double eta);
+    ViterbiLogOdds(const float (&emission_probabilities)[5][5], const float (&trans_prob)[3][3], double eta);
 };
 
 
