@@ -1,7 +1,3 @@
-//
-// Created by tomo on 1/8/19.
-//
-
 #ifndef BIOINF_VITERBI_H
 #define BIOINF_VITERBI_H
 
@@ -14,10 +10,10 @@
 class Viterbi : public IViterbi {
 
 public:
-
-    std::string alignSequences(Sequence &first, Sequence &second) override;
-
-    Viterbi(const double *transition_probabilities,const double **emission_probabilities);
+    void alignSequences(Sequence *first, Sequence *second) override;
+    Viterbi( const float (&transition_probabilities)[3],
+             const float (&emission_probabilities)[5][5],
+             std::map<char, int> &lookup);
 };
 
 
