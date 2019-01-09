@@ -92,6 +92,10 @@ float *MleEstimator::getAveragedTransitionProbabilities() {
     return averagedTransitionProbabilities;
 }
 
+std::map<char, int> &MleEstimator::getLookupTable() {
+    return _lookupTable;
+}
+
 void MleEstimator::estimate() {
     DIR *dir;
     struct dirent *ent;

@@ -35,6 +35,8 @@ public:
     float **getEmissionProbabilities();
 
     float *getAveragedTransitionProbabilities();
+
+    std::map<char, int> &getLookupTable();
 };
 
 
