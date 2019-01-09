@@ -1,7 +1,3 @@
-//
-// Created by tomo on 1/8/19.
-//
-
 #include "MleEstimator.h"
 #include <iostream>
 #include <fstream>
@@ -22,9 +18,9 @@ MleEstimator::MleEstimator(char *directory_path) : _directoryPath(directory_path
 
     this->_lookupTable.insert(std::pair<char, int>('B', 0));
     this->_lookupTable.insert(std::pair<char, int>('M', 1));
-    this->_lookupTable.insert(std::pair<char, int>('X', 3));
-    this->_lookupTable.insert(std::pair<char, int>('Y', 4));
-    this->_lookupTable.insert(std::pair<char, int>('E', 5));
+    this->_lookupTable.insert(std::pair<char, int>('X', 2));
+    this->_lookupTable.insert(std::pair<char, int>('Y', 3));
+    this->_lookupTable.insert(std::pair<char, int>('E', 4));
 
     memset(_emission_probabilities, 0, sizeof(_emission_probabilities[0][0]) * 5 * 5);
     memset(_transition_probabilities, 0, sizeof(_transition_probabilities[0][0]) * 5 * 5);
