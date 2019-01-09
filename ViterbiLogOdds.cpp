@@ -50,40 +50,97 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
     const std::vector<char> &first_sequence = first->getSequence();
     const std::vector<char> &second_sequence = second->getSequence();
 
-    double d = -log((delta * (1 - epsilon - tau)) / ((1 - eta) * (1 - 2 * delta - tau)));
-    double e = -log(epsilon / (1 - eta));
+    const double d = -log((delta * (1 - epsilon - tau)) / ((1 - eta) * (1 - 2 * delta - tau)));
+    const double e = -log(epsilon / (1 - eta));
 
     ulong n = first_sequence.size();
     ulong m = second_sequence.size();
 
     // pokazivaci na 2D polja
-    auto *viterbi_match = new double[(n + 1) * (m + 1)]; //   [n + 1][m + 1];
-    auto *viterbi_insert_x = new double[(n + 1) * (m + 1)]; //[n + 1][m + 1];
-    auto *viterbi_insert_y = new double[(n + 1) * (m + 1)]; // [n + 1][m + 1];
+    //auto *viterbi_match = new double[(n + 1) * (m + 1)]; //   [n + 1][m + 1];
+    //auto *viterbi_insert_x = new double[(n + 1) * (m + 1)]; //[n + 1][m + 1];
+    //auto *viterbi_insert_y = new double[(n + 1) * (m + 1)]; // [n + 1][m + 1];
+
+
+    auto **viterbi_match = new double *[n + 1];
+    for (int i = 0; i < n + 1; ++i)
+        viterbi_match[i] = new double[m + 1];
+
+    auto **viterbi_insert_x = new double *[n + 1];
+    for (int i = 0; i < n + 1; ++i)
+        viterbi_insert_x[i] = new double[m + 1];
+
+    auto **viterbi_insert_y = new double *[n + 1];
+    for (int i = 0; i < n + 1; ++i)
+        viterbi_insert_y[i] = new double[m + 1];
+
 
     double minus_infinity = std::numeric_limits<double>::lowest();
 
-    initialize(n, m, viterbi_match, viterbi_insert_x, viterbi_insert_y, minus_infinity);
+    for (ulong i = 1; i < n + 1; i++) {
+        viterbi_match[i][0] = minus_infinity;
+        viterbi_insert_x[i][0] = minus_infinity;
+        viterbi_insert_y[i][0] = minus_infinity;
+        //arr_set(vm, i, 0, m + 1, value);
+        //arr_set(vx, i, 0, m + 1, value);
+        //arr_set(vy, i, 0, m + 1, value);
+    }
+
+    for (ulong j = 1; j < m + 1; j++) {
+        viterbi_match[0][j] = minus_infinity;
+        viterbi_insert_x[0][j] = minus_infinity;
+        viterbi_insert_y[0][j] = minus_infinity;
+        //arr_set(vm, 0, j, m + 1, value);
+        //arr_set(vx, 0, j, m + 1, value);
+        //arr_set(vy, 0, j, m + 1, value);
+    }
+
+    //initialize(n, m, viterbi_match, viterbi_insert_x, viterbi_insert_y, minus_infinity);
 
     double val = -2 * log(eta);
 
-    arr_set(viterbi_match, 1, 1, m + 1, val);
+    viterbi_match[1][1] = val;
 
-    double val1 = arr_get(viterbi_match, 1, 1, m + 1);
+    // arr_set(viterbi_match, 1, 1, m + 1, val);
 
-    arr_set(viterbi_insert_x, 1, 1, m + 1, minus_infinity);
-    arr_set(viterbi_insert_y, 1, 1, m + 1, minus_infinity);
+    double val1 = viterbi_match[1][1]; //arr_get(viterbi_match, 1, 1, m + 1);
+
+    //arr_set(viterbi_insert_x, 1, 1, m + 1, minus_infinity);
+    //arr_set(viterbi_insert_y, 1, 1, m + 1, minus_infinity);
+
+    viterbi_insert_x[1][1] = minus_infinity;
+    viterbi_insert_y[1][1] = minus_infinity;
 
     // inicijalizacija polja za pracenje stanja
 
-    auto *transitions_m = new byte[n * m];
-    auto *transitions_x = new byte[n * m];
-    auto *transitions_y = new byte[n * m];
+
+
+    //auto *transitions_m = new byte[n * m];
+    //auto *transitions_x = new byte[n * m];
+    //auto *transitions_y = new byte[n * m];
+
+    auto **transitions_m = new byte *[n];
+    for (int i = 0; i < n; ++i)
+        transitions_m[i] = new byte[m];
+
+    auto **transitions_x = new byte *[n];
+    for (int i = 0; i < n; ++i)
+        transitions_x[i] = new byte[m];
+
+    auto **transitions_y = new byte *[n];
+    for (int i = 0; i < n; ++i)
+        transitions_y[i] = new byte[m];
+
+
+
+
+
+
 
     // nisam siguran dal je ovo potrebno, al nek za sad ostane
-    memset(transitions_m, 0, sizeof(char) * n * m);
-    memset(transitions_x, 0, sizeof(char) * n * m);
-    memset(transitions_y, 0, sizeof(char) * n * m);
+    //memset(transitions_m, 0, sizeof(transitions_m[0][0]) * n * m);
+    //memset(transitions_x, 0, sizeof(transitions_x[0][0]) * n * m);
+    //memset(transitions_y, 0, sizeof(transitions_y[0][0]) * n * m);
 
     byte result;
     double maxVal;
@@ -91,48 +148,48 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
     for (ulong i = 1; i < n + 1; i++) {
         for (ulong j = 1; j < m + 1; j++) {
             if (i == 1 && j == 1) continue;
-            double vm = arr_get(viterbi_match, i - 1, j - 1, m + 1);
-            double vx = arr_get(viterbi_insert_x, i - 1, j - 1, m + 1);
-            double vy = arr_get(viterbi_insert_y, i - 1, j - 1, m + 1);
+            double vm = viterbi_match[i-1][j-1];//arr_get(viterbi_match, i - 1, j - 1, m + 1);
+            double vx = viterbi_insert_x[i-1][j-1];//arr_get(viterbi_insert_x, i - 1, j - 1, m + 1);
+            double vy = viterbi_insert_y[i-1][j-1];//arr_get(viterbi_insert_y, i - 1, j - 1, m + 1);
 
             maxVal = this->max(vm, vx, vy, &result);
 
-            arr_set(transitions_m, i - 1, j - 1, m, result);
+            transitions_m[i-1][j-1] = result; //arr_set(transitions_m, i - 1, j - 1, m, result);
 
             double sVal = this->s(first_sequence.at(i - 1), second_sequence.at(j - 1));
-            arr_set(viterbi_match, i, j, m + 1, (sVal + maxVal));
+            viterbi_match[i][j] = sVal + maxVal; //arr_set(viterbi_match, i, j, m + 1, (sVal + maxVal));
 
-            vm = arr_get(viterbi_match, i - 1, j, m + 1) - d;
-            vx = arr_get(viterbi_insert_x, i - 1, j, m + 1) - e;
+            vm = viterbi_match[i-1][j] -d ;// arr_get(viterbi_match, i - 1, j, m + 1) - d;
+            vx = viterbi_insert_x[i-1][j] -e; //arr_get(viterbi_insert_x, i - 1, j, m + 1) - e;
 
             maxVal = this->max(vm, vx, M, X, &result);
 
-            arr_set(transitions_x, i - 1, j - 1, m, result);
-            arr_set(viterbi_insert_x, i, j, m + 1, maxVal);
+            transitions_x[i-1][j-1] = result ; //arr_set(transitions_x, i - 1, j - 1, m, result);
+            viterbi_insert_x[i][j] = maxVal ; // arr_set(viterbi_insert_x, i, j, m + 1, maxVal);
 
 
-            vm = arr_get(viterbi_match, i, j - 1, m + 1) - d;
-            vy = arr_get(viterbi_insert_y, i, j - 1, m + 1) - e;
+            vm = viterbi_match[i][j-1] -d; // arr_get(viterbi_match, i, j - 1, m + 1) - d;
+            vy = viterbi_insert_y[i][j-1] - e; //arr_get(viterbi_insert_y, i, j - 1, m + 1) - e;
 
             maxVal = this->max(vm, vy, M, Y, &result);
 
-            arr_set(transitions_y, i - 1, j - 1, m, result);
-            arr_set(viterbi_insert_y, i, j, m + 1, maxVal);
+            transitions_y[i-1][j-1] = result ; //arr_set(transitions_y, i - 1, j - 1, m, result);
+            viterbi_insert_y[i][j] = maxVal; //arr_set(viterbi_insert_y, i, j, m + 1, maxVal);
         }
     }
 
-    std::map<byte, byte *> transitions_lookup = {
+    std::map<byte, byte **> transitions_lookup = {
             {M, transitions_m},
             {X, transitions_x},
             {Y, transitions_y}
     };
 
-    double vm = arr_get(viterbi_match, n, m, m + 1);
-    double vx = arr_get(viterbi_insert_x, n, m, m + 1);
-    double vy = arr_get(viterbi_insert_y, n, m, m + 1);
+    double vm = viterbi_match[n][m];//arr_get(viterbi_match, n, m, m + 1);
+    double vx = viterbi_insert_x[n][m];//arr_get(viterbi_insert_x, n, m, m + 1);
+    double vy = viterbi_insert_y[n][m];//arr_get(viterbi_insert_y, n, m, m + 1);
 
     // pokazivac na ispravno polje
-    byte *trans;
+    byte **trans;
 
     // indeksi po kojima idemo algoritmom backtrack
     ulong i = n - 1;
@@ -158,7 +215,7 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
     // ove dolje korake moramo ponavljat sve dok ne dobijemo ukupnu sekvencu stanja
     while (i > 0 && j > 0) {
         // dohvati vrijednost polja
-        char state = arr_get(trans, i, j, n);
+        char state = trans[i][j]; //arr_get(trans, i, j, n);
         states.push_back(state);
 
         // iz nekog razloga mi switch neda da koristim M,X,Y
