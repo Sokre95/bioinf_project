@@ -3,6 +3,7 @@
 
 #include "FastaParser.h"
 #include "Viterbi.h"
+#include "ViterbiLogOdds.h"
 
 int main() {
 
@@ -21,6 +22,8 @@ int main() {
         std::cout << std::endl << std::endl;
     }
 
+    const float transition_prob[3] = {  };
+
 
     const float emission_prob[5][5] = {
             { 0.071791, 0.047737, 0.073646, 0.052003, 0.000989 },
@@ -36,7 +39,7 @@ int main() {
             { 0.004233, 0, 0.050042 }
     };
 
-    Viterbi viterbi(emission_prob, transmission_prob);
+    ViterbiLogOdds viterbi(transition_prob, emission_prob, transmission_prob, 0.5);
 
     viterbi.alignSequences(sequences.at(0), sequences.at(1));
 

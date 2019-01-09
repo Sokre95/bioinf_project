@@ -6,27 +6,6 @@
 
 typedef unsigned long ulong;
 
-float IViterbi::max(float v1, float v2, byte first, byte second, byte* result) {
-    if (v1 > v2) {
-        *result = first;
-        return v1;
-    }
-
-    *result = second;
-    return v2;
-}
-
-float IViterbi::max(float m, float x, float y, byte* result) {
-    float max = this->max(m, x, M, X, result);
-
-    if (max < y) {
-        *result = Y;
-        return y;
-    }
-
-    return max;
-}
-
 void Viterbi::alignSequences(Sequence *first, Sequence *second) {
     std::vector<char> first_sequence = first->getSequence();
     std::vector<char> second_sequence = second->getSequence();
@@ -72,8 +51,8 @@ void Viterbi::alignSequences(Sequence *first, Sequence *second) {
         char &c2 = second_sequence.at(0);
         char &c1 = first_sequence.at(i);
 
-        int pos1 = _lookupTable.at(c1);
-        int pos2 = _lookupTable.at(c2);
+        int pos1 = lookup.at(c1);
+        int pos2 = lookup.at(c2);
 
         float prob = emission_probabilities[pos1][pos2];
 
@@ -85,7 +64,7 @@ void Viterbi::alignSequences(Sequence *first, Sequence *second) {
         v2 = trans_prob[1][1] * viterbi_insert_x[0]; // iz X u X
         max = this->max(v1, v2, M, X, &previous);
 
-        tmp_x[0] = emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at('-')] * max;
+        tmp_x[0] = emission_probabilities[lookup.at(first_sequence.at(i))][lookup.at('-')] * max;
         *(transitions_x + i * n + 0) = previous;
 
         tmp_y[0] = 0; // za j = 1 ovo je uvijek nula prema pretpostavci
@@ -101,21 +80,21 @@ void Viterbi::alignSequences(Sequence *first, Sequence *second) {
 
             max = this->max(v1, v2, v3, &previous); // pronademo max
 
-            tmp_m[j] = emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at(second_sequence.at(j))] * max;
+            tmp_m[j] = emission_probabilities[lookup.at(first_sequence.at(i))][lookup.at(second_sequence.at(j))] * max;
             *(transitions_m + i * n + j) = previous;
 
             v1 = trans_prob[0][1] * viterbi_match[j]; // iz M u X
             v2 = trans_prob[1][1] * viterbi_insert_x[j]; // iz X u X
 
             max = this->max(v1, v2, M, X, &previous);
-            tmp_x[j] = emission_probabilities[_lookupTable.at(first_sequence.at(i))][_lookupTable.at('-')] * max;
+            tmp_x[j] = emission_probabilities[lookup.at(first_sequence.at(i))][lookup.at('-')] * max;
             *(transitions_x + i * n + j)  = previous;
 
             v1 = trans_prob[0][2] * tmp_m[j - 1]; // iz M u Y
             v2 = trans_prob[2][2] * tmp_y[j - 1]; // iz Y u Y
             max = this->max(v1, v2, M, Y, &previous);
 
-            tmp_y[j] = emission_probabilities[_lookupTable.at('-')][_lookupTable.at(second_sequence.at(j))] * max;
+            tmp_y[j] = emission_probabilities[lookup.at('-')][lookup.at(second_sequence.at(j))] * max;
             *(transitions_y + i * n + j)  = previous;
         }
 
@@ -187,9 +166,9 @@ void Viterbi::alignSequences(Sequence *first, Sequence *second) {
         trans = transitions_lookup[state]; // iz onoga sta je zapisano u polju odredujemo sljedecu tablicu
     }
 
-    delete transitions_x;
-    delete transitions_y;
-    delete transitions_m;
+    delete [] transitions_x;
+    delete [] transitions_y;
+    delete [] transitions_m;
 
     delete [] viterbi_match;
     delete [] viterbi_insert_x;
