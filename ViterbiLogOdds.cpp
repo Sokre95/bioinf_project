@@ -177,14 +177,14 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
                 bottom.push_back(gap);
 
                 aligned.emplace_back(first_sequence.at(i), '-');
-                j = j - 1;
+                i = i - 1;
                 break;
             case 3: // Y --> emitira stanje -,yj
                 top.push_back(gap);
                 bottom.push_back(second_sequence.at(j));
 
                 aligned.emplace_back('-', second_sequence.at(j));
-                i = i - 1;
+                j = j - 1;
                 break;
         }
 
@@ -213,11 +213,10 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
 
 
 ViterbiLogOdds::ViterbiLogOdds(
-        const float (&transition_probabilities)[3],
-        const float (&emission_probabilities)[5][5],
+        const float *transition_probabilities,
+        float **emission_probabilities,
         std::map<char, int> &lookup, const double eta)
         : IViterbi(transition_probabilities, emission_probabilities, lookup),
-          transition_probabilities(transition_probabilities),
           eta(eta),
           termination_constant_c(std::log(1 - 2 * transition_probabilities[0] - transition_probabilities[1])
                                  - std::log(1 - transition_probabilities[2] - transition_probabilities[1])) {

@@ -15,14 +15,12 @@ private:
     const double termination_constant_c;
     const double eta;
 
-    const float (&transition_probabilities)[3];
-
     double s(char xi, char yj);
 
 public:
     void alignSequences(Sequence *first, Sequence *second) override;
 
-    ViterbiLogOdds(const float (&transition_probabilities)[3], const float (&emission_probabilities)[5][5],
+    ViterbiLogOdds(const float *transition_probabilities,  float **emission_probabilities,
                    std::map<char, int> &lookup,
                    double eta);
 

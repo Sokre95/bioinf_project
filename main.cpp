@@ -4,12 +4,13 @@
 #include "FastaParser.h"
 #include "Viterbi.h"
 #include "ViterbiLogOdds.h"
+#include "MleEstimator.h"
 
 int main() {
 
     FastaParser parser("../database/pairs/p1.fasta");
 
-    const std::vector<Sequence*> sequences = parser.parse();
+    const std::vector<Sequence *> sequences = parser.parse();
 
     for (int i = 0; i < sequences.size(); ++i) {
         Sequence *s = sequences.at(i);
@@ -43,6 +44,16 @@ int main() {
     //ViterbiLogOdds viterbi(transition_prob, emission_prob, 0.01);
 
     //viterbi.alignSequences(sequences.at(0), sequences.at(1));
+
+    auto *mleEstimator = new MleEstimator("../database/outputs/");
+    mleEstimator->estimate();
+
+
+    auto *logOdds = new ViterbiLogOdds(mleEstimator->getAveragedTransitionProbabilities(),
+                                                        mleEstimator->getEmissionProbabilities(),
+                                                        mleEstimator->getLookupTable(), 0.01);
+
+    logOdds->alignSequences(sequences.at(0), sequences.at(1));
 
     return 0;
 }

@@ -11,9 +11,10 @@ class Viterbi : public IViterbi {
 
 public:
     void alignSequences(Sequence *first, Sequence *second) override;
-    Viterbi( const float (&transition_probabilities)[3],
-             const float (&emission_probabilities)[5][5],
-             std::map<char, int> &lookup);
+
+    Viterbi(const float *transition_probabilities,
+            float **emission_probabilities,
+            std::map<char, int> &lookup);
 };
 
 

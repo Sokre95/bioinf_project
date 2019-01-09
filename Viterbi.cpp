@@ -177,6 +177,6 @@ void Viterbi::alignSequences(Sequence *first, Sequence *second) {
     delete[] viterbi_insert_y;
 }
 
-Viterbi::Viterbi(const float (&transition_probabilities)[3],
-                 const float (&emission_probabilities)[5][5],
+Viterbi::Viterbi(const float *transition_probabilities,
+                 float **emission_probabilities,
                  std::map<char, int> &lookup) : IViterbi(transition_probabilities, emission_probabilities, lookup) {}

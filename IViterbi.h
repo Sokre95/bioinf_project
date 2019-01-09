@@ -14,24 +14,25 @@ typedef unsigned char byte;
 class IViterbi {
 
 protected:
-    const float (&emission_probabilities)[5][5];
-    const float (&transition_probabilities)[3];
-    std::map<char, int> lookup;
     const char gap = '-';
     const float tau;
     const float delta;
     const float epsilon;
+
+    const float *transition_probabilities;
+    float **emission_probabilities;
+    std::map<char, int> lookup;
 
 
 public:
     // pure virtual function providing interface framework.
     virtual void alignSequences(Sequence *first, Sequence *second) = 0;
 
-    IViterbi(const float (&transition_probabilities)[3], const float (&emission_probabilities)[5][5],
+    IViterbi(const float *transition_probabilities, float **emission_probabilities,
              std::map<char, int> &lookup) :
             emission_probabilities(emission_probabilities), transition_probabilities(transition_probabilities),
             lookup(lookup),
-            tau(transition_probabilities[0]), delta(transition_probabilities[1]), epsilon(transition_probabilities[2]) {
+            delta(transition_probabilities[lookup['d']]), tau(transition_probabilities[lookup['t']]), epsilon(transition_probabilities[lookup['e']]) {
     }
 
 protected:
