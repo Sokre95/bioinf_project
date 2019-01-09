@@ -12,7 +12,7 @@
 
 class MleEstimator {
 private:
-    float _transition_probabilities[5][5];
+    float _transition_probabilities[4][5];
     float _emission_probabilities[5][5];
     char *_directoryPath;
     std::map<char, int> _lookupTable;

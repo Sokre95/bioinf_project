@@ -22,6 +22,11 @@ MleEstimator::MleEstimator(char *directory_path) : _directoryPath(directory_path
     this->_lookupTable.insert(std::pair<char, int>('Y', 3));
     this->_lookupTable.insert(std::pair<char, int>('E', 4));
 
+
+    this->_lookupTable.insert(std::pair<char, int>('d', 0));
+    this->_lookupTable.insert(std::pair<char, int>('t', 1));
+    this->_lookupTable.insert(std::pair<char, int>('e', 2));
+
     this->statesTransitionInPairHmm.emplace_back('B', 'M');
     this->statesTransitionInPairHmm.emplace_back('B', 'X');
     this->statesTransitionInPairHmm.emplace_back('B', 'Y');
@@ -39,7 +44,7 @@ MleEstimator::MleEstimator(char *directory_path) : _directoryPath(directory_path
 
 
     memset(_emission_probabilities, 0, sizeof(_emission_probabilities[0][0]) * 5 * 5);
-    memset(_transition_probabilities, 0, sizeof(_transition_probabilities[0][0]) * 5 * 5);
+    memset(_transition_probabilities, 0, sizeof(_transition_probabilities[0][0]) * 4 * 5);
 
 
 }
@@ -53,8 +58,8 @@ float **MleEstimator::getEmissionProbabilities() {
 }
 
 float **MleEstimator::getTransitionProbabilities() {
-    auto **emission = new float *[5];
-    for (size_t i = 0; i < 5; ++i) {
+    auto **emission = new float *[4];
+    for (size_t i = 0; i < 4; ++i) {
         emission[i] = _transition_probabilities[i];
     }
     return emission;
@@ -69,13 +74,13 @@ float *MleEstimator::getAveragedTransitionProbabilities() {
     accumulator += _transition_probabilities[_lookupTable.at('M')][_lookupTable.at('X')];
     accumulator += _transition_probabilities[_lookupTable.at('M')][_lookupTable.at('Y')];
 
-    averagedTransitionProbabilities[0] = accumulator / 4.0f;
+    averagedTransitionProbabilities[_lookupTable.at('d')] = accumulator / 4.0f;
 
     accumulator = 0.0f;
     accumulator += _transition_probabilities[_lookupTable.at('X')][_lookupTable.at('X')];
     accumulator += _transition_probabilities[_lookupTable.at('Y')][_lookupTable.at('Y')];
 
-    averagedTransitionProbabilities[1] = accumulator / 2.0f;
+    averagedTransitionProbabilities[_lookupTable.at('e')] = accumulator / 2.0f;
 
     accumulator = 0.0f;
     accumulator += _transition_probabilities[_lookupTable.at('B')][_lookupTable.at('E')];
@@ -83,7 +88,7 @@ float *MleEstimator::getAveragedTransitionProbabilities() {
     accumulator += _transition_probabilities[_lookupTable.at('X')][_lookupTable.at('E')];
     accumulator += _transition_probabilities[_lookupTable.at('M')][_lookupTable.at('E')];
 
-    averagedTransitionProbabilities[2] = accumulator / 4.0f;
+    averagedTransitionProbabilities[_lookupTable.at('t')] = accumulator / 4.0f;
     return averagedTransitionProbabilities;
 }
 
