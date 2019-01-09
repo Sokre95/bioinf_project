@@ -22,7 +22,7 @@ int main() {
         std::cout << std::endl << std::endl;
     }
 
-    const float transition_prob[3] = {  };
+    const float transition_prob[3] = { 0.00170081, 0.00721899, 0.0255121 };
 
 
     const float emission_prob[5][5] = {
@@ -39,7 +39,7 @@ int main() {
             { 0.004233, 0, 0.050042 }
     };
 
-    ViterbiLogOdds viterbi(transition_prob, emission_prob, transmission_prob, 0.5);
+    ViterbiLogOdds viterbi(transition_prob, emission_prob, transmission_prob, 0.01);
 
     viterbi.alignSequences(sequences.at(0), sequences.at(1));
 
