@@ -4,7 +4,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <cstring>
-#include <vector>
+#include<cmath>
 
 
 MleEstimator::MleEstimator(char *directory_path) : _directoryPath(directory_path) {
@@ -21,6 +21,22 @@ MleEstimator::MleEstimator(char *directory_path) : _directoryPath(directory_path
     this->_lookupTable.insert(std::pair<char, int>('X', 2));
     this->_lookupTable.insert(std::pair<char, int>('Y', 3));
     this->_lookupTable.insert(std::pair<char, int>('E', 4));
+
+    this->statesTransitionInPairHmm.emplace_back('B', 'M');
+    this->statesTransitionInPairHmm.emplace_back('B', 'X');
+    this->statesTransitionInPairHmm.emplace_back('B', 'Y');
+    this->statesTransitionInPairHmm.emplace_back('B', 'E');
+    this->statesTransitionInPairHmm.emplace_back('M', 'M');
+    this->statesTransitionInPairHmm.emplace_back('M', 'X');
+    this->statesTransitionInPairHmm.emplace_back('M', 'Y');
+    this->statesTransitionInPairHmm.emplace_back('M', 'E');
+    this->statesTransitionInPairHmm.emplace_back('X', 'X');
+    this->statesTransitionInPairHmm.emplace_back('X', 'M');
+    this->statesTransitionInPairHmm.emplace_back('X', 'E');
+    this->statesTransitionInPairHmm.emplace_back('Y', 'Y');
+    this->statesTransitionInPairHmm.emplace_back('Y', 'M');
+    this->statesTransitionInPairHmm.emplace_back('Y', 'E');
+
 
     memset(_emission_probabilities, 0, sizeof(_emission_probabilities[0][0]) * 5 * 5);
     memset(_transition_probabilities, 0, sizeof(_transition_probabilities[0][0]) * 5 * 5);
@@ -42,6 +58,33 @@ float **MleEstimator::getTransitionProbabilities() {
         emission[i] = _transition_probabilities[i];
     }
     return emission;
+}
+
+float *MleEstimator::getAveragedTransitionProbabilities() {
+    auto *averagedTransitionProbabilities = new float[3];
+
+    float accumulator = 0.0f;
+    accumulator += _transition_probabilities[_lookupTable.at('B')][_lookupTable.at('X')];
+    accumulator += _transition_probabilities[_lookupTable.at('B')][_lookupTable.at('Y')];
+    accumulator += _transition_probabilities[_lookupTable.at('M')][_lookupTable.at('X')];
+    accumulator += _transition_probabilities[_lookupTable.at('M')][_lookupTable.at('Y')];
+
+    averagedTransitionProbabilities[0] = accumulator / 4.0f;
+
+    accumulator = 0.0f;
+    accumulator += _transition_probabilities[_lookupTable.at('X')][_lookupTable.at('X')];
+    accumulator += _transition_probabilities[_lookupTable.at('Y')][_lookupTable.at('Y')];
+
+    averagedTransitionProbabilities[1] = accumulator / 2.0f;
+
+    accumulator = 0.0f;
+    accumulator += _transition_probabilities[_lookupTable.at('B')][_lookupTable.at('E')];
+    accumulator += _transition_probabilities[_lookupTable.at('Y')][_lookupTable.at('E')];
+    accumulator += _transition_probabilities[_lookupTable.at('X')][_lookupTable.at('E')];
+    accumulator += _transition_probabilities[_lookupTable.at('M')][_lookupTable.at('E')];
+
+    averagedTransitionProbabilities[2] = accumulator / 4.0f;
+    return averagedTransitionProbabilities;
 }
 
 void MleEstimator::estimate() {
@@ -136,7 +179,7 @@ void MleEstimator::estimate() {
         setProbabilities(emission_y_frequency, number_of_pairs, true);
         setProbabilities(transition_frequency, number_of_transitions, false);
 
-        delete(states);
+        delete (states);
         closedir(dir);
     } else {
         perror("Could not open directory");
@@ -163,11 +206,25 @@ void MleEstimator::setProbabilities(std::map<std::pair<char, char>, unsigned lon
         char &x = emission_x.first;
         char &y = emission_x.second;
         if (emission) {
-            _emission_probabilities[_lookupTable.at(x)][_lookupTable.at(y)] = float(
-                    (emission_frequency + 1.0) / (float) (number_of_pairs + 2.0));
+            _emission_probabilities[_lookupTable.at(x)][_lookupTable.at(y)] =
+                    (emission_frequency + 1.0f) / (number_of_pairs + 2.0f);
         } else {
-            _transition_probabilities[_lookupTable.at(x)][_lookupTable.at(y)] = (float) (
-                    (emission_frequency + 1.0) / (float) (number_of_pairs + 2.0));
+            _transition_probabilities[_lookupTable.at(x)][_lookupTable.at(y)] =
+                    (emission_frequency + 1.0f) / (number_of_pairs + 2.0f);
+        }
+    }
+
+    if (!emission) {
+        const double epsilon = 1e-6 /* some small number such as 1e-5 */;
+        //za sve prijelaze koji nisu u skupu za ucenje, daj neku malu vjerojatnost
+        for (auto &stateTransition :statesTransitionInPairHmm) {
+            char &x = stateTransition.first;
+            char &y = stateTransition.second;
+            //ako je vjerojatnost 0.0
+            if (std::abs(_transition_probabilities[_lookupTable.at(x)][_lookupTable.at(y)] - 0.0f) <=
+                epsilon * std::abs(_transition_probabilities[_lookupTable.at(x)][_lookupTable.at(y)])) {
+                _transition_probabilities[_lookupTable.at(x)][_lookupTable.at(y)] = (1.0f / (number_of_pairs + 2.0f));
+            }
         }
     }
 }

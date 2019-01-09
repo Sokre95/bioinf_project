@@ -8,6 +8,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 class MleEstimator {
 private:
@@ -15,6 +16,7 @@ private:
     float _emission_probabilities[5][5];
     char *_directoryPath;
     std::map<char, int> _lookupTable;
+    std::vector<std::pair<char, char>> statesTransitionInPairHmm;
 
     void increaseFrequency(std::map<std::pair<char, char>, unsigned long> &dictionary, std::pair<char, char> &pair);
 
@@ -31,6 +33,8 @@ public:
     float **getTransitionProbabilities();
 
     float **getEmissionProbabilities();
+
+    float *getAveragedTransitionProbabilities();
 };
 
 
