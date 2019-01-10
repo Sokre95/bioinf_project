@@ -16,16 +16,17 @@ float ViterbiLogOdds::s(char a, char b) {
     float qa = emission_probabilities[lookup[a]][lookup[gap]];
     float qb = emission_probabilities[lookup[gap]][lookup[b]];
 
-    float firstPartial =  std::log(pab / (qa * qb));
+    float firstPartial = std::log(pab / (qa * qb));
     float secondPartial = std::log((1 - 2 * delta - tau) / ((1 - eta) * (1 - eta)));
 
     return firstPartial + secondPartial;
 }
 
-float **create2dArray(ulong n, ulong m) {
-    auto **array = new float *[n];
-    for (int i = 0; i < n + 1; ++i)
-        array[i] = new float[m];
+template<typename T>
+T **create2dArray(ulong n, ulong m) {
+    auto **array = new T *[n];
+    for (int i = 0; i < n; ++i)
+        array[i] = new T[m];
 
     return array;
 }
@@ -41,12 +42,9 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
     ulong n = first_sequence.size();
     ulong m = second_sequence.size();
 
-    auto **viterbi_match = create2dArray(n + 1, m + 1);
-
-    auto **viterbi_insert_x = create2dArray(n + 1, m + 1);
-
-    auto **viterbi_insert_y = create2dArray(n + 1, m + 1);
-
+    auto **viterbi_match = create2dArray<float>(n + 1, m + 1);
+    auto **viterbi_insert_x = create2dArray<float>(n + 1, m + 1);
+    auto **viterbi_insert_y = create2dArray<float>(n + 1, m + 1);
 
     float minus_infinity = std::numeric_limits<float>::lowest();
 
@@ -66,23 +64,12 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
 
     viterbi_match[1][1] = val;
 
-    float val1 = viterbi_match[1][1];
-
     viterbi_insert_x[1][1] = minus_infinity;
     viterbi_insert_y[1][1] = minus_infinity;
 
-
-    auto **transitions_m = new byte *[n];
-    for (int i = 0; i < n; ++i)
-        transitions_m[i] = new byte[m];
-
-    auto **transitions_x = new byte *[n];
-    for (int i = 0; i < n; ++i)
-        transitions_x[i] = new byte[m];
-
-    auto **transitions_y = new byte *[n];
-    for (int i = 0; i < n; ++i)
-        transitions_y[i] = new byte[m];
+    auto **transitions_m = create2dArray<byte>(n, m);
+    auto **transitions_x = create2dArray<byte>(n, m);
+    auto **transitions_y = create2dArray<byte>(n, m);
 
     byte result;
     float maxVal;
