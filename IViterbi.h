@@ -36,7 +36,7 @@ public:
     }
 
 protected:
-    double max(double v1, double v2, byte first, byte second, byte *result) {
+    float max(float v1, float v2, byte first, byte second, byte *result) {
         if (v1 > v2) {
             *result = first;
             return v1;
@@ -46,8 +46,8 @@ protected:
         return v2;
     };
 
-    double max(double m, double x, double y, byte *result) {
-        double max = this->max(m, x, M, X, result);
+    float max(float m, float x, float y, byte *result) {
+        float max = this->max(m, x, M, X, result);
 
         if (max < y) {
             *result = Y;

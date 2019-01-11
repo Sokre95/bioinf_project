@@ -12,17 +12,17 @@
 class ViterbiLogOdds : public IViterbi {
 
 private:
-    const double termination_constant_c;
-    const double eta;
+    const float termination_constant_c;
+    const float eta;
 
-    double s(char xi, char yj);
+    float s(char xi, char yj);
 
 public:
     void alignSequences(Sequence *first, Sequence *second) override;
 
     ViterbiLogOdds(const float *transition_probabilities,  float **emission_probabilities,
                    std::map<char, int> &lookup,
-                   double eta);
+                   float eta);
 
 
 };

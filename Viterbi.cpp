@@ -80,7 +80,7 @@ void Viterbi::alignSequences(Sequence *first, Sequence *second) {
             v2 = xToMatchOrYToMatch * viterbi_insert_x[j - 1]; // iz X u M
             v3 = xToMatchOrYToMatch * viterbi_insert_y[j - 1]; // iz Y u M
 
-            max = (float) this->max(v1, v2, v3, &previous); // pronademo max
+            max = this->max(v1, v2, v3, &previous); // pronademo max
 
             tmp_m[j] = emission_probabilities[lookup.at(first_sequence.at(i))][lookup.at(second_sequence.at(j))] * max;
             *(transitions_m + i * n + j) = previous;
@@ -88,13 +88,13 @@ void Viterbi::alignSequences(Sequence *first, Sequence *second) {
             v1 = delta * viterbi_match[j]; // iz M u X
             v2 = epsilon * viterbi_insert_x[j]; // iz X u X
 
-            max = (float) this->max(v1, v2, M, X, &previous);
+            max = this->max(v1, v2, M, X, &previous);
             tmp_x[j] = emission_probabilities[lookup.at(first_sequence.at(i))][lookup.at('-')] * max;
             *(transitions_x + i * n + j) = previous;
 
             v1 = delta * tmp_m[j - 1]; // iz M u Y
             v2 = epsilon * tmp_y[j - 1]; // iz Y u Y
-            max = (float) this->max(v1, v2, M, Y, &previous);
+            max = this->max(v1, v2, M, Y, &previous);
 
             tmp_y[j] = emission_probabilities[lookup.at('-')][lookup.at(second_sequence.at(j))] * max;
             *(transitions_y + i * n + j) = previous;
