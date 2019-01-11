@@ -134,9 +134,6 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
     } else {
         trans = transitions_y;
     }
-
-    std::vector<std::tuple<char, char>> aligned;
-
     std::vector<char> top;
     std::vector<char> bottom;
     std::vector<char> states;
@@ -153,27 +150,26 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
             case 1: // M
                 top.push_back(first_sequence.at(i));
                 bottom.push_back(second_sequence.at(j));
-                aligned.emplace_back(first_sequence.at(i), second_sequence.at(j));
-
                 j = j - 1;
                 i = i - 1;
                 break;
             case 2: // X --> emitira stanje xi,-
                 top.push_back(first_sequence.at(i));
                 bottom.push_back(gap);
-                aligned.emplace_back(first_sequence.at(i), '-');
                 i = i - 1;
                 break;
             case 3: // Y --> emitira stanje -,yj
                 top.push_back(gap);
                 bottom.push_back(second_sequence.at(j));
-                aligned.emplace_back('-', second_sequence.at(j));
                 j = j - 1;
                 break;
         }
 
         trans = transitions_lookup[state]; // iz onoga sta je zapisano u polju odredujemo sljedecu tablicu
     }
+
+    top.push_back(first_sequence.at(0));
+    bottom.push_back(second_sequence.at(0));
 
     for (auto it = top.rbegin(); it != top.rend(); ++it) {
         std::cout << *it << std::flush;
