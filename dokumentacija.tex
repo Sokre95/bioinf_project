@@ -11,7 +11,12 @@
 \usepackage[section]{placeins}
 \usepackage[labelsep=quad,indention=10pt]{subfig}
 \usepackage{url}
+\usepackage{physics}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\newcommand\sbullet[1][.5]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
+\usepackage{amsmath}
 \captionsetup*[subfigure]{position=bottom}
+
 
 
 
@@ -101,6 +106,77 @@
 
 
 \section{Opis algoritma i vizualizacija}
+U ovome radu korišten je modificirani Viterbijem algoritam pomoću kojeg korištnjem dinamičkog programiranja možemo pronaći najvjerojatniju sekvencu skrivenih stanja koja ujedno predstavlja optimalno poravnanje.
+Da bismo klasičan Viterbijem algoritam tranformirali u HMM, moramo napraviti nekoliko izmjena. Prvo moramo odrediti vjerojatnosti za emitiranje simbola iz stanja i vjerojatnosti tranzicija između pojedinih stanja. Npr. stanje M (match)  ima vjerojatnosnu distribuciju 
+
+\textbf{Algoritam: Viterbijev algoritam za HMM}\\
+Inicijalizacija: \\
+\tab \tab $v^M(0,0) = 1$\\
+\tab \tab $v^{\sbullet[.75]}(i,0) = v^{\sbullet[.75]}(0,j) = 0$\\
+Korak:\\
+\tab za svaki $i=1,...,n$, $j=1,...,m$ \\
+\begin{equation}
+     v^M(i,j) = p_{x_iy_i} \max
+    \begin{cases}
+      (1 - 2\delta - \tau)v^M(i-1,j-1)\\
+      (1-\epsilon-\tau)v^X(i-1,j-1)\\
+      (1-\epsilon - \tau)v^Y(i-1,j-1)\\          
+    \end{cases}
+\end{equation}
+\begin{equation}
+     v^X(i,j) = q_{x_i}\max
+    \begin{cases}
+      \delta v^M(i-1,j)\\
+      \epsilon v^X(i-1,j)\\
+    \end{cases}   
+\end{equation}
+\begin{equation}
+     v^Y(i,j) = q_{y_j}\max
+    \begin{cases}
+      \delta v^M(i,j-1)\\
+      \epsilon v^Y(i,j-1)\\
+    \end{cases}   
+\end{equation}
+Uvjet zaustavljanja:
+$v^E = \max(v^M(n,m), v^X(n,m), v^Y(n,m))$ \\
+
+
+\textbf{Algoritam: optimalno poravnanje logaritamskih kvota} \\
+Inicijalizacija: \\
+\tab \tab $V^M(0,0) = - 2 log(\eta), V^X(0,0) = V^Y(0,0) = -\infty$\\
+\tab \tab $V^{\sbullet[.75]}(i,-1) = V^{\sbullet[.75]}(-1,j) = -\infty$\\
+Korak:\\
+\tab za svaki $i=0,...,n$, $j=0,...,m$ osim (0,0):\\
+\begin{equation}
+     V^M(i,j) = s(x_i,y_j) + \max
+    \begin{cases}
+      V^M(i-1,j-1)\\
+      V^X(i-1,j-1)\\
+      V^Y(i-1,j-1)\\          
+    \end{cases}
+\end{equation}
+\begin{equation}
+     V^X(i,j) = \max
+    \begin{cases}
+      V^M(i-1,j) - d\\
+      V^X(i-1,j) - e\\
+    \end{cases}   
+\end{equation}
+\begin{equation}
+     V^Y(i,j) = \max
+    \begin{cases}
+      V^M(i,j-1) -d\\
+      V^Y(i,j-1) - e\\         
+    \end{cases}
+\end{equation}
+Uvjet zaustavljanja:
+$V = \max(V^M(n,m), V^X(n,m) + c , V^Y(n,m) + c )$ 
+Pri čemu su:\\
+	\tab$s(a,b) = \log\frac{p_{ab}}{q_a q_b} + \log(\frac{1 - 2\delta - \tau }{(1-\eta)})$\\
+    \tab$d = -\log\frac{\delta(1-\epsilon - \tau)}{(1-\eta)(1-2\delta - \tau)}$\\
+    \tab$e = -\log\frac{\epsilon}{1-\eta}$\\
+	\tab$c = \log( 1 - 2\delta - \tau) - \log(1-\epsilon - \tau)$
+
 
 \section{Analiza točnosti, vremena izvođenja i utroška memorije}
 
