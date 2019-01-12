@@ -15,7 +15,6 @@ MleEstimator::MleEstimator(char *directory_path) : _directoryPath(directory_path
     this->_lookupTable.insert(std::pair<char, int>('T', 3));
     this->_lookupTable.insert(std::pair<char, int>('-', 4));
 
-
     this->_lookupTable.insert(std::pair<char, int>('B', 0));
     this->_lookupTable.insert(std::pair<char, int>('M', 1));
     this->_lookupTable.insert(std::pair<char, int>('X', 2));
@@ -151,6 +150,11 @@ void MleEstimator::estimate() {
                     number_of_pairs++;
 
                     if (a != '-' && b != '-') {
+                        if(b =='o'){
+                            std::cout<<a<<" "<<b << std::endl;
+                            std::cout<<file_path<< std::endl;
+
+                        }
                         states->push_back('M');
                         std::pair<char, char> pair(a, b);
                         increaseFrequency(match_frequency, pair);

@@ -45,7 +45,9 @@ int main() {
 
     //viterbi.alignSequences(sequences.at(0), sequences.at(1));
 
-    auto *mleEstimator = new MleEstimator("../database/outputs/");
+    std::pair<char,char> pair('a', 'b');
+
+    auto *mleEstimator = new MleEstimator("../database/outputs_mafft/");
     mleEstimator->estimate();
 
 
