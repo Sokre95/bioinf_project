@@ -104,8 +104,8 @@ void MleEstimator::estimate() {
         /* print all the files and directories within directory */
 
 
-        unsigned long number_of_transitions = 0;
-        unsigned long number_of_pairs = 0;
+        unsigned long  long number_of_transitions = 0;
+        unsigned long  long number_of_pairs = 0;
 
 
         std::map<std::pair<char, char>, unsigned long> match_frequency;
@@ -150,11 +150,6 @@ void MleEstimator::estimate() {
                     number_of_pairs++;
 
                     if (a != '-' && b != '-') {
-                        if(b =='o'){
-                            std::cout<<a<<" "<<b << std::endl;
-                            std::cout<<file_path<< std::endl;
-
-                        }
                         states->push_back('M');
                         std::pair<char, char> pair(a, b);
                         increaseFrequency(match_frequency, pair);

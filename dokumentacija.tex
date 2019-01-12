@@ -15,6 +15,10 @@
 \newcommand\tab[1][1cm]{\hspace*{#1}}
 \newcommand\sbullet[1][.5]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
 \usepackage{amsmath}
+\usepackage{color, colortbl}
+\usepackage[table,x11names]{xcolor}
+\usepackage[first=0,last=9]{lcg}
+\newcommand{\ra}{\rand0.\arabic{rand}}
 \captionsetup*[subfigure]{position=bottom}
 
 
@@ -109,7 +113,7 @@
 U ovome radu korišten je modificirani Viterbijem algoritam pomoću kojeg korištnjem dinamičkog programiranja možemo pronaći najvjerojatniju sekvencu skrivenih stanja koja ujedno predstavlja optimalno poravnanje.
 Da bismo klasičan Viterbijem algoritam tranformirali u HMM, moramo napraviti nekoliko izmjena. Prvo moramo odrediti vjerojatnosti za emitiranje simbola iz stanja i vjerojatnosti tranzicija između pojedinih stanja. Npr. stanje M (match)  ima vjerojatnosnu distribuciju 
 
-\textbf{Algoritam: Viterbijev algoritam za HMM}\\
+\textbf{Algoritam: Viterbijev algoritam za HMM} \cite{hmm_algorithms}\\
 Inicijalizacija: \\
 \tab \tab $v^M(0,0) = 1$\\
 \tab \tab $v^{\sbullet[.75]}(i,0) = v^{\sbullet[.75]}(0,j) = 0$\\
@@ -141,7 +145,7 @@ Uvjet zaustavljanja:
 $v^E = \max(v^M(n,m), v^X(n,m), v^Y(n,m))$ \\
 
 
-\textbf{Algoritam: optimalno poravnanje logaritamskih kvota} \\
+\textbf{Algoritam: optimalno poravnanje logaritamskih kvota} \cite{hmm_algorithms} 	 \\
 Inicijalizacija: \\
 \tab \tab $V^M(0,0) = - 2 log(\eta), V^X(0,0) = V^Y(0,0) = -\infty$\\
 \tab \tab $V^{\sbullet[.75]}(i,-1) = V^{\sbullet[.75]}(-1,j) = -\infty$\\
@@ -170,12 +174,60 @@ Korak:\\
     \end{cases}
 \end{equation}
 Uvjet zaustavljanja:
-$V = \max(V^M(n,m), V^X(n,m) + c , V^Y(n,m) + c )$ 
+$V = \max(V^M(n,m), V^X(n,m) + c , V^Y(n,m) + c )$ \\
 Pri čemu su:\\
 	\tab$s(a,b) = \log\frac{p_{ab}}{q_a q_b} + \log(\frac{1 - 2\delta - \tau }{(1-\eta)})$\\
     \tab$d = -\log\frac{\delta(1-\epsilon - \tau)}{(1-\eta)(1-2\delta - \tau)}$\\
     \tab$e = -\log\frac{\epsilon}{1-\eta}$\\
 	\tab$c = \log( 1 - 2\delta - \tau) - \log(1-\epsilon - \tau)$
+	
+	
+	
+\begin{center}
+  \begin{tabular}{ | >{\columncolor[gray]{0.8}}c | c | c | c | c | c | c |}
+    \hline
+     \rowcolor{lightgray} indeks & -1 & 0 & 1 & 2 & ... & m\\ \hline
+     -1 & $-\infty$ & $-\infty$ & $-\infty$  & $-\infty$  & $-\infty$  & $-\infty$   \\ \hline
+      0 & $-\infty$ & $-2log\eta$ & &  &  &\\ \hline
+      1 & $-\infty$  & & & & &\\  \hline
+      2 & $-\infty$  & & & & &\\ \hline
+      ... & $-\infty$ & & & & &\\ \hline
+      n & $-\infty$ & & & & &\\ \hline
+            
+\hline
+  \end{tabular}
+\end{center}
+
+\begin{center}
+  \begin{tabular}{ | >{\columncolor[gray]{0.8}}c | c | c | c | c | c | c |}
+    \hline
+     \rowcolor{lightgray} indeks & -1 & 0 & 1 & 2 & ... & m\\ \hline
+     -1 & $-\infty$ & $-\infty$ & $-\infty$  & $-\infty$  & $-\infty$  & $-\infty$   \\ \hline
+      0 & $-\infty$ & $-\infty$ & &  &  &\\ \hline
+      1 & $-\infty$  & & & & &\\  \hline
+      2 & $-\infty$  & & & & &\\ \hline
+      ... & $-\infty$ & & & & &\\ \hline
+      n & $-\infty$ & & & & &\\ \hline
+            
+\hline
+  \end{tabular}
+\end{center}
+
+
+\begin{center}
+  \begin{tabular}{ | >{\columncolor[gray]{0.8}}c | c | c | c | c | c | c |}
+    \hline
+     \rowcolor{lightgray} indeks & -1 & 0 & 1 & 2 & ... & m\\ \hline
+     -1 & $-\infty$ & $-\infty$ & $-\infty$  & $-\infty$  & $-\infty$  & $-\infty$   \\ \hline
+      0 & $-\infty$ & $-\infty$ & &  &  &\\ \hline
+      1 & $-\infty$  & & & & &\\  \hline
+      2 & $-\infty$  & & & & &\\ \hline
+      ... & $-\infty$ & & & & &\\ \hline
+      n & $-\infty$ & & & & &\\ \hline
+            
+\hline
+  \end{tabular}
+\end{center}
 
 
 \section{Analiza točnosti, vremena izvođenja i utroška memorije}

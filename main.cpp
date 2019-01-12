@@ -8,7 +8,7 @@
 
 int main() {
 
-    FastaParser parser("../database/pairs/p1.fasta");
+    FastaParser parser("../database/pairs/HIV1_REF_2010/p1.fasta");
 
     const std::vector<Sequence *> sequences = parser.parse();
 
@@ -45,9 +45,8 @@ int main() {
 
     //viterbi.alignSequences(sequences.at(0), sequences.at(1));
 
-    std::pair<char,char> pair('a', 'b');
 
-    auto *mleEstimator = new MleEstimator("../database/outputs_mafft/");
+    auto *mleEstimator = new MleEstimator("../database/outputs_mafft/upcase/");
     mleEstimator->estimate();
 
 
