@@ -11,10 +11,11 @@ def prepare_file(file_name)
     unless chars == ["-", "A", "C", "G", "T"] || chars == ["A", "C", "G", "T"]
       puts "#{file_name} is invalid"
       puts "\T Chars in sequence: #{sequence.split("").uniq.sort}"
+      File.delete(upcase_file.path)
+    else
+      upcase_file.puts(">" + fasta_entry.definition)
+      upcase_file.puts(sequence)
     end
-
-    upcase_file.puts(fasta_entry.definition)
-    upcase_file.puts(sequence)
   end
 end
 
