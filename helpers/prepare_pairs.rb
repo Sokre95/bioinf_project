@@ -1,39 +1,36 @@
 require 'bio'
 require 'pry'
 
-file = Bio::FlatFile.open("../database/tropomyosin.fasta")
-fasta_entries = file.entries
+FILENAMES = ['tropomyosin', 'ebola', 'hepatitis', 'HIV1_REF_2010', 'rabies_virus', 'random_100', 'random_5000']
 
-cleaned_sequences = []
+FILENAMES.each do |file_name|
+  file = Bio::FlatFile.open("../database/#{file_name}.fasta")
+  fasta_entries = file.entries
 
-fasta_entries.each do |fasta_entry|
-  cleaned_sequences << {
-    sequence: fasta_entry.data.delete(" -").delete("\n").upcase,
-    definition: fasta_entry.definition 
-  }
-end
+  cleaned_sequences = []
 
-appropriate_sequences = []
-
-cleaned_sequences.each do |entry|
-  nucleotides = entry[:sequence].split("").uniq
-  if nucleotides.size == 4 && nucleotides.sort == ["A", "C", "G", "T"]
-    appropriate_sequences << entry
+  fasta_entries.each do |fasta_entry|
+    sequence = fasta_entry.data.delete(" -").delete("\n").upcase
+    nucleotides = sequence.split("").uniq
+    if nucleotides.size == 4 && nucleotides.sort == ["A", "C", "G", "T"]
+      cleaned_sequences << {
+        sequence: sequence,
+        definition: fasta_entry.definition 
+      }
+    end
   end
-end
 
-sequence_pairs = []
+  pair_number = 0
+  cleaned_sequences.each_with_index do |entry1, index|
+    cleaned_sequences.drop(index + 1).each do |entry2|
+      system 'mkdir', '-p', "../database/pairs/#{file_name}/"
+      pair_number += 1
 
-appropriate_sequences.each_with_index do |entry1, index|
-  appropriate_sequences.drop(index + 1).each do |entry2|
-    sequence_pairs << { entry1: entry1, entry2: entry2 }
+      f = File.open("../database/pairs/#{file_name}/p#{pair_number}.fasta", "w")
+      f.puts(">" + entry1[:definition])
+      f.puts(entry1[:sequence])
+      f.puts(">" + entry2[:definition])
+      f.puts(entry2[:sequence])
+    end
   end
-end
-binding.pry
-sequence_pairs.each_with_index do |pair, index|
-  f = File.open("../database/pairs_tropomyosin/p#{index+1}.fasta", "w")
-  f.puts(">" + pair[:entry1][:definition])
-  f.puts(pair[:entry1][:sequence])
-  f.puts(">" + pair[:entry2][:definition])
-  f.puts(pair[:entry2][:sequence])
 end
