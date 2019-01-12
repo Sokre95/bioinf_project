@@ -1,14 +1,14 @@
 require 'bio'
 require 'pry'
 
-file = Bio::FlatFile.open("../database/HIV1_REF_2010_genome_DNA.fasta")
+file = Bio::FlatFile.open("../database/tropomyosin.fasta")
 fasta_entries = file.entries
 
 cleaned_sequences = []
 
 fasta_entries.each do |fasta_entry|
   cleaned_sequences << {
-    sequence: fasta_entry.data.delete(" -").delete("\n"),
+    sequence: fasta_entry.data.delete(" -").delete("\n").upcase,
     definition: fasta_entry.definition 
   }
 end
@@ -29,9 +29,9 @@ appropriate_sequences.each_with_index do |entry1, index|
     sequence_pairs << { entry1: entry1, entry2: entry2 }
   end
 end
-
+binding.pry
 sequence_pairs.each_with_index do |pair, index|
-  f = File.open("../database/pairs/p#{index+1}.fasta", "w")
+  f = File.open("../database/pairs_tropomyosin/p#{index+1}.fasta", "w")
   f.puts(">" + pair[:entry1][:definition])
   f.puts(pair[:entry1][:sequence])
   f.puts(">" + pair[:entry2][:definition])
