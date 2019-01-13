@@ -16,10 +16,15 @@
 \newcommand\sbullet[1][.5]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
 \usepackage{amsmath}
 \usepackage{color, colortbl}
+\usepackage{tabularx,ragged2e,booktabs,caption}
 \usepackage[table,x11names]{xcolor}
 \usepackage[first=0,last=9]{lcg}
 \newcommand{\ra}{\rand0.\arabic{rand}}
 \captionsetup*[subfigure]{position=bottom}
+\usepackage{tikz}
+\usetikzlibrary{tikzmark}
+\usepackage{float}
+
 
 
 
@@ -111,7 +116,16 @@
 
 \section{Opis algoritma i vizualizacija}
 U ovome radu korišten je modificirani Viterbijem algoritam pomoću kojeg korištnjem dinamičkog programiranja možemo pronaći najvjerojatniju sekvencu skrivenih stanja koja ujedno predstavlja optimalno poravnanje.
-Da bismo klasičan Viterbijem algoritam tranformirali u HMM, moramo napraviti nekoliko izmjena. Prvo moramo odrediti vjerojatnosti za emitiranje simbola iz stanja i vjerojatnosti tranzicija između pojedinih stanja. Npr. stanje M (match)  ima vjerojatnosnu distribuciju 
+Da bismo klasičan Viterbijev algoritam tranformirali u HMM, moramo napraviti nekoliko izmjena. Prvo moramo odrediti vjerojatnosti za emitiranje simbola iz stanja. Npr. stanje M (match) ima vjerojatnosnu distribuciju $p_{ab}$ za emitaranje para simbola $ab$. Stanja $X$ i $Y$ imaju vjerojatnost emitiranja $p_a$ simbola $a$ umjesto praznine.
+Također potrebno je definirati vjerojatnosti prijelaza između stanja tako da je suma vjerojatnosti odlaska iz pojedinog stanja jednaka 1. Vjerojatnost prijelaza iz stanja M u stanje X i Y opisujemo oznakom $\delta$, a vjerojatnost u ostanka u stanju X ili Y sa $\epsilon$.
+Takva definicija ne definira kompletni model koji omogučava vjerojatnosnu distribuju po svim mogučim sekvecama. Za kompletiranje modela dodajemo početno i krajnje stanje $Početak$ i $kraj$. Definiramo vjerojatnost $\tau$ koja je jednaka za sve prijelaze iz stanaj M, X i Y u stanje End, te za stanje Begin u stanja M, X i Y.
+
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{HMM.png}
+  \caption{Model HMM-a korištenog za poravnanje parova sekvenci}
+  \label{fig:hmm}
+\end{figure}
+
 
 \textbf{Algoritam: Viterbijev algoritam za HMM} \cite{hmm_algorithms}\\
 Inicijalizacija: \\
@@ -144,6 +158,7 @@ Korak:\\
 Uvjet zaustavljanja:
 $v^E = \max(v^M(n,m), v^X(n,m), v^Y(n,m))$ \\
 
+Zbog činjenice da su vjerjoatnosti brojevi u intervalu $[0,1]$, gore navedeni algoritam nije upotrebiv za implementaciju na računalu zbog velikog broja množenja brojeva bliskih nuli, pa se u praksi koristi logaritamska inačica tog algoritma koja je navedena u nastavku.  
 
 \textbf{Algoritam: optimalno poravnanje logaritamskih kvota} \cite{hmm_algorithms} 	 \\
 Inicijalizacija: \\
@@ -184,6 +199,8 @@ Pri čemu su:\\
 	
 	
 \begin{center}
+\centering
+\captionof{table}{Vizualizacija početnog stanja matrice $V_M$} \label{tab:title} 
   \begin{tabular}{ | >{\columncolor[gray]{0.8}}c | c | c | c | c | c | c |}
     \hline
      \rowcolor{lightgray} indeks & -1 & 0 & 1 & 2 & ... & m\\ \hline
@@ -193,12 +210,22 @@ Pri čemu su:\\
       2 & $-\infty$  & & & & &\\ \hline
       ... & $-\infty$ & & & & &\\ \hline
       n & $-\infty$ & & & & &\\ \hline
-            
-\hline
-  \end{tabular}
+      \end{tabular}
 \end{center}
 
+U tablici iznad možemo vidjet početno stanje matrice u kojoj pamtimo logaritamske kvote za stanje podudaranja. Iz modificiranog Viterbijevog algoritma koji koristiti logaritamske kvote iterativno korištenjem dinamičkog programiranja punimo tablicu i upisujemo novo izračunate vrijednosti. Analogno radimo za tablice ispod, te kada dođemo do kraja iste te tablice koristimo za rekonstrukciju optimalnog poravnanja. Želimo li izračunati primjerice za vrijednosti $i=1, j=0$ izraz za $V_M$ bi izgledao ovako: \\ 
+\begin{equation}
+     V^M(1,0) = s(x_1,y_0) + \max
+    \begin{cases}
+      V^M(0,-1) = -\infty\\
+      V^X(0,-1) = -\infty\\
+      V^Y(0,-1) = -\infty\\          
+    \end{cases}
+\end{equation}. Analogno popunjavamo preostali dio tablice. Ovdje možemo primjetiti kako za računanje vrijednosti u koraku $i,j$ nam trebaju podatci iz koraka $i-1, j-1$, tako da je potrebno pararelno popunjavati sve tri prikazane matrice.
+
 \begin{center}
+\centering
+\captionof{table}{Vizualizacija početnog stanja matrice $V_X$} \label{tab:title} 
   \begin{tabular}{ | >{\columncolor[gray]{0.8}}c | c | c | c | c | c | c |}
     \hline
      \rowcolor{lightgray} indeks & -1 & 0 & 1 & 2 & ... & m\\ \hline
@@ -215,6 +242,8 @@ Pri čemu su:\\
 
 
 \begin{center}
+\centering
+\captionof{table}{Vizualizacija početnog stanja matrice $V_Y$} \label{tab:title} 
   \begin{tabular}{ | >{\columncolor[gray]{0.8}}c | c | c | c | c | c | c |}
     \hline
      \rowcolor{lightgray} indeks & -1 & 0 & 1 & 2 & ... & m\\ \hline
@@ -227,6 +256,33 @@ Pri čemu su:\\
             
 \hline
   \end{tabular}
+\end{center}
+
+Kada smo završili s forward dijelom algoritma, odnosno kada su nam sve strukture podatka popunjene spremni za pronalazak optimalnog poravnanja dvije sekvence. Kako nam je uvjet "zaustavljanja" $V = \max(V^M(n,m), V^X(n,m) + c , V^Y(n,m) + c )$, tražimo maksimum između navednih stanja. Zatim   generiramo poravnanje  te u povratku prema početku ponavljamo postupak tražeći maksimum između $V_M, V_X, V_Y$.Na idućem primjeru je ilustriran primjer pronalaska optimalnog poravnanja gdje se na poziciji $(n,m)$ vrijednost računa kako je prethodno spomenuto. \\
+
+\begin{center}
+\centering
+\captionof{table}{Vizualizacija pronalaska optimalnog poravnanja} \label{tab:title} 
+  \begin{tabular}{ | >{\columncolor[gray]{0.8}}c | c | c | c |c  | c | c | c |}
+    \hline
+     \rowcolor{lightgray} indeks & 0 & 1 & 2 & 3 & ...&m-1  & m\\ \hline
+      0 & $V^{\sbullet[.75]}(0,0)$ \tikzmark{d}   & &  &   &  & &   \\ \hline
+      1 &  &$V^{\sbullet[.75]}(1,1)$ \tikzmark{c}  &  &   &  &  & \\ \hline
+      2 &  & &  &  &  &   &\\ \hline
+      3 &  & &  &   &     & &  \\ \hline
+      ... &  & &  &   &  & &   \\ \hline
+      n-1 &  & &  & ...  & & $V^{\sbullet[.75]}(n-1,m-1)$ \tikzmark{b}&   \\ \hline
+      n &  & &  &   &  &  & $V^{\sbullet[.75]}(n,m)$ \tikzmark{a}\\ \hline
+            
+   
+            
+\hline
+  \end{tabular}
+  
+  \begin{tikzpicture}[overlay, remember picture, yshift=.40\baselineskip, shorten >=.5pt, shorten <=.5pt]
+     \draw [->] ({pic cs:a}) [bend right] to ({pic cs:b});
+      \draw [->] ({pic cs:c}) [bend right] to ({pic cs:d});
+  \end{tikzpicture}
 \end{center}
 
 
