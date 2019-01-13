@@ -45,16 +45,16 @@ int main() {
 
     //viterbi.alignSequences(sequences.at(0), sequences.at(1));
 
-
+    std::cout << "Estimate:" << std::endl;
     auto *mleEstimator = new MleEstimator("../database/outputs_mafft/upcase/");
     mleEstimator->estimate();
 
-
+    std::cout << "Viterbi:" << std::endl;
     auto *logOdds = new ViterbiLogOdds(mleEstimator->getAveragedTransitionProbabilities(),
                                                         mleEstimator->getEmissionProbabilities(),
                                                         mleEstimator->getLookupTable(), 0.01);
 
     logOdds->alignSequences(sequences.at(0), sequences.at(1));
-
+    std::cout << "End" << std::endl;
     return 0;
 }
