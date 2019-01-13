@@ -6,26 +6,13 @@
 #include <cstring>
 #include<cmath>
 
+const std::map<char, int> MleEstimator::lookupTable = {
+        {'A', 0}, {'C', 1}, {'G', 2}, {'T', 3}, {'-', 4},
+        {'B', 0}, {'M', 1}, {'X', 2}, {'Y', 3}, {'E', 4},
+        {'d', 0}, {'t', 1}, {'e', 2}
+};
 
 MleEstimator::MleEstimator(char *directory_path) : _directoryPath(directory_path) {
-
-    this->_lookupTable.insert(std::pair<char, int>('A', 0));
-    this->_lookupTable.insert(std::pair<char, int>('C', 1));
-    this->_lookupTable.insert(std::pair<char, int>('G', 2));
-    this->_lookupTable.insert(std::pair<char, int>('T', 3));
-    this->_lookupTable.insert(std::pair<char, int>('-', 4));
-
-    this->_lookupTable.insert(std::pair<char, int>('B', 0));
-    this->_lookupTable.insert(std::pair<char, int>('M', 1));
-    this->_lookupTable.insert(std::pair<char, int>('X', 2));
-    this->_lookupTable.insert(std::pair<char, int>('Y', 3));
-    this->_lookupTable.insert(std::pair<char, int>('E', 4));
-
-
-    this->_lookupTable.insert(std::pair<char, int>('d', 0));
-    this->_lookupTable.insert(std::pair<char, int>('t', 1));
-    this->_lookupTable.insert(std::pair<char, int>('e', 2));
-
     this->statesTransitionInPairHmm.emplace_back('B', 'M');
     this->statesTransitionInPairHmm.emplace_back('B', 'X');
     this->statesTransitionInPairHmm.emplace_back('B', 'Y');
@@ -41,11 +28,8 @@ MleEstimator::MleEstimator(char *directory_path) : _directoryPath(directory_path
     this->statesTransitionInPairHmm.emplace_back('Y', 'M');
     this->statesTransitionInPairHmm.emplace_back('Y', 'E');
 
-
     memset(_emission_probabilities, 0, sizeof(_emission_probabilities[0][0]) * 5 * 5);
-    memset(_transition_probabilities, 0, sizeof(_transition_probabilities[0][0]) * 4 * 5);
-
-
+    memset(MleEstimator::_transition_probabilities, 0, sizeof(_transition_probabilities[0][0]) * 4 * 5);
 }
 
 float **MleEstimator::getEmissionProbabilities() {
@@ -68,31 +52,31 @@ float *MleEstimator::getAveragedTransitionProbabilities() {
     auto *averagedTransitionProbabilities = new float[3];
 
     float accumulator = 0.0f;
-    accumulator += _transition_probabilities[_lookupTable.at('B')][_lookupTable.at('X')];
-    accumulator += _transition_probabilities[_lookupTable.at('B')][_lookupTable.at('Y')];
-    accumulator += _transition_probabilities[_lookupTable.at('M')][_lookupTable.at('X')];
-    accumulator += _transition_probabilities[_lookupTable.at('M')][_lookupTable.at('Y')];
+    accumulator += _transition_probabilities[lookupTable.at('B')][lookupTable.at('X')];
+    accumulator += _transition_probabilities[lookupTable.at('B')][lookupTable.at('Y')];
+    accumulator += _transition_probabilities[lookupTable.at('M')][lookupTable.at('X')];
+    accumulator += _transition_probabilities[lookupTable.at('M')][lookupTable.at('Y')];
 
-    averagedTransitionProbabilities[_lookupTable.at('d')] = accumulator / 4.0f;
-
-    accumulator = 0.0f;
-    accumulator += _transition_probabilities[_lookupTable.at('X')][_lookupTable.at('X')];
-    accumulator += _transition_probabilities[_lookupTable.at('Y')][_lookupTable.at('Y')];
-
-    averagedTransitionProbabilities[_lookupTable.at('e')] = accumulator / 2.0f;
+    averagedTransitionProbabilities[lookupTable.at('d')] = accumulator / 4.0f;
 
     accumulator = 0.0f;
-    accumulator += _transition_probabilities[_lookupTable.at('B')][_lookupTable.at('E')];
-    accumulator += _transition_probabilities[_lookupTable.at('Y')][_lookupTable.at('E')];
-    accumulator += _transition_probabilities[_lookupTable.at('X')][_lookupTable.at('E')];
-    accumulator += _transition_probabilities[_lookupTable.at('M')][_lookupTable.at('E')];
+    accumulator += _transition_probabilities[lookupTable.at('X')][lookupTable.at('X')];
+    accumulator += _transition_probabilities[lookupTable.at('Y')][lookupTable.at('Y')];
 
-    averagedTransitionProbabilities[_lookupTable.at('t')] = accumulator / 4.0f;
+    averagedTransitionProbabilities[lookupTable.at('e')] = accumulator / 2.0f;
+
+    accumulator = 0.0f;
+    accumulator += _transition_probabilities[lookupTable.at('B')][lookupTable.at('E')];
+    accumulator += _transition_probabilities[lookupTable.at('Y')][lookupTable.at('E')];
+    accumulator += _transition_probabilities[lookupTable.at('X')][lookupTable.at('E')];
+    accumulator += _transition_probabilities[lookupTable.at('M')][lookupTable.at('E')];
+
+    averagedTransitionProbabilities[lookupTable.at('t')] = accumulator / 4.0f;
     return averagedTransitionProbabilities;
 }
 
-std::map<char, int> &MleEstimator::getLookupTable() {
-    return _lookupTable;
+const std::map<char, int> &MleEstimator::getLookupTable() {
+    return MleEstimator::lookupTable;
 }
 
 void MleEstimator::estimate() {
@@ -214,10 +198,10 @@ void MleEstimator::setProbabilities(std::map<std::pair<char, char>, unsigned lon
         char &x = emission_x.first;
         char &y = emission_x.second;
         if (emission) {
-            _emission_probabilities[_lookupTable.at(x)][_lookupTable.at(y)] =
+            _emission_probabilities[lookupTable.at(x)][lookupTable.at(y)] =
                     (emission_frequency + 1.0f) / (number_of_pairs + 2.0f);
         } else {
-            _transition_probabilities[_lookupTable.at(x)][_lookupTable.at(y)] =
+            _transition_probabilities[lookupTable.at(x)][lookupTable.at(y)] =
                     (emission_frequency + 1.0f) / (number_of_pairs + 2.0f);
         }
     }
@@ -229,9 +213,9 @@ void MleEstimator::setProbabilities(std::map<std::pair<char, char>, unsigned lon
             char &x = stateTransition.first;
             char &y = stateTransition.second;
             //ako je vjerojatnost 0.0
-            if (std::abs(_transition_probabilities[_lookupTable.at(x)][_lookupTable.at(y)] - 0.0f) <=
-                epsilon * std::abs(_transition_probabilities[_lookupTable.at(x)][_lookupTable.at(y)])) {
-                _transition_probabilities[_lookupTable.at(x)][_lookupTable.at(y)] = (1.0f / (number_of_pairs + 2.0f));
+            if (std::abs(_transition_probabilities[lookupTable.at(x)][lookupTable.at(y)] - 0.0f) <=
+                epsilon * std::abs(_transition_probabilities[lookupTable.at(x)][lookupTable.at(y)])) {
+                _transition_probabilities[lookupTable.at(x)][lookupTable.at(y)] = (1.0f / (number_of_pairs + 2.0f));
             }
         }
     }

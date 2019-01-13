@@ -15,9 +15,7 @@ private:
     float _transition_probabilities[4][5];
     float _emission_probabilities[5][5];
     char *_directoryPath;
-    std::map<char, int> _lookupTable;
     std::vector<std::pair<char, char>> statesTransitionInPairHmm;
-
     void increaseFrequency(std::map<std::pair<char, char>, unsigned long> &dictionary, std::pair<char, char> &pair);
 
     void
@@ -28,6 +26,8 @@ public:
 
     MleEstimator(char *directory_path);
 
+    static const std::map<char, int> lookupTable;
+
     void estimate();
 
     float **getTransitionProbabilities();
@@ -36,7 +36,7 @@ public:
 
     float *getAveragedTransitionProbabilities();
 
-    std::map<char, int> &getLookupTable();
+    const std::map<char, int> &getLookupTable();
 };
 
 
