@@ -19,7 +19,7 @@ void load_params(float* averaged_transition_probabilities, float** emission_prob
 
 void print_aligned_sequences_to_console(std::vector<char> top, std::vector<char> bottom, int line_width);
 void write_aligned_sequences_to_file(std::string file_path, std::vector<char> top, std::vector<char> bottom, bool single_line, int line_width);
-void write_sequence(std::ostream &os, std::vector<char> sequence, bool single_line, int line_width);
+void write_sequence(std::ostream &os, std::vector<char> sequence, bool multiline, int line_width);
 void print_sequences(const std::vector<Sequence *> sequences);
 void print_duration(long duration);
 
@@ -27,7 +27,7 @@ cxxopts::Options options("bioinf", "Run either with -v [--viterbi] or -e [--esti
 
 bool print_to_console = false;
 bool write_to_file = true;
-bool multiple = false;
+bool multiline = false;
 int line_width = 100;
 
 int main(int argc, char* argv[]) {
@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
         }
         if(result.count("multiline") > 0){
             line_width = result["multiline"].as<int>();
-            multiple = true;
+            multiline = true;
         }
         run_viterbi(file_path);
     }
@@ -208,7 +208,7 @@ void print_duration(long duration) {
 }
 
 
-void write_aligned_sequences_to_file(std::string file_path, std::vector<char> top, std::vector<char> bottom, bool single_line, int line_width){
+void write_aligned_sequences_to_file(std::string file_path, std::vector<char> top, std::vector<char> bottom, bool multiline, int line_width){
 
     std::size_t last_slash_index = file_path.find_last_of("/");
     std::string file_name = file_path.substr(last_slash_index +1);
@@ -226,19 +226,19 @@ void write_aligned_sequences_to_file(std::string file_path, std::vector<char> to
     std::cout << "Writing aligned sequences to file: " + directory_path + file_name << std::endl;
 
     aligned << ">" << file_name + "_top" << std::endl;
-    write_sequence(aligned, top, single_line, line_width);
+    write_sequence(aligned, top, multiline, line_width);
     aligned << std::endl;
 
     aligned << ">" << file_name + "_bottom" << std::endl;
-    write_sequence(aligned, top, single_line, line_width);
+    write_sequence(aligned, bottom, multiline, line_width);
     aligned.close();
 }
 
-void write_sequence(std::ostream &os, std::vector<char> sequence, bool single_line, int line_width){
+void write_sequence(std::ostream &os, std::vector<char> sequence, bool multiline, int line_width){
     int curret_line_width = 0;
     for(auto const& c: sequence) {
         os << c << std::flush;
-        if (single_line == false){
+        if (multiline == true){
             curret_line_width++;
             if (curret_line_width == line_width){
                 os << std::endl;
