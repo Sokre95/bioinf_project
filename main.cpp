@@ -1,10 +1,17 @@
 #include <iostream>
 #include <fstream>
-
+#include <chrono>
 #include "FastaParser.h"
 #include "Viterbi.h"
 #include "ViterbiLogOdds.h"
 #include "MleEstimator.h"
+
+void print(long duration) {
+    std::cout << std::endl;
+    std::cout << "-----Kraj izvrsavanja programa-----" << std::endl;
+    std::cout << "---------Analiza izvodenja---------" << std::endl;
+    std::cout << "Vrijeme izvrsavanja: " << duration << " s" << std::endl;
+}
 
 int main() {
 
@@ -22,28 +29,6 @@ int main() {
         }
         std::cout << std::endl << std::endl;
     }
-//
-//    const float transition_prob[3] = { 0.00170081, 0.00721899, 0.0255121 };
-//
-//
-//    const float emission_prob[5][5] = {
-//            { 0.071791, 0.047737, 0.073646, 0.052003, 0.000989 },
-//            { 0.034875, 0.040440, 0.044707, 0.025723, 0.000186 },
-//            { 0.065855, 0.032464, 0.067029, 0.040749, 0.000742 },
-//            { 0.047242, 0.033762, 0.039327, 0.031227, 0.000124 },
-//            { 0.016696, 0.007853, 0.013542, 0.007297, 0 }
-//    };
-//
-//    const float transmission_prob[3][3] = {
-//            { 0.889107, 0.001361, 0.001663 },
-//            { 0.001361, 0.000983, 0 },
-//            { 0.004233, 0, 0.050042 }
-//    };
-
-
-    //ViterbiLogOdds viterbi(transition_prob, emission_prob, 0.01);
-
-    //viterbi.alignSequences(sequences.at(0), sequences.at(1));
 
     std::cout << "Estimate:" << std::endl;
     auto *mleEstimator = new MleEstimator("../database/outputs_mafft/upcase/");
@@ -54,7 +39,66 @@ int main() {
                                                         mleEstimator->getEmissionProbabilities(),
                                                         mleEstimator->getLookupTable(), 0.01);
 
-    logOdds->alignSequences(sequences.at(0), sequences.at(1));
-    std::cout << "End" << std::endl;
+    std::vector<char> top;
+    std::vector<char> bottom;
+
+    std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+
+    logOdds->alignSequences(sequences.at(0), sequences.at(1), &top, &bottom);
+
+    std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+
+    long duration = std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
+
+    // ispis...
+
+    // ispis...
+
+    /* for (auto it = top.rbegin(); it != top.rend(); ++it) {
+         std::cout << *it << std::flush;
+     }
+
+     std::cout << std::endl;
+
+     for (auto it = bottom.rbegin(); it != bottom.rend(); ++it) {
+         std::cout << *it << std::flush;
+     } */
+
+    const int line_width = 80;
+    ulong curr = top.size() - 1;
+
+    bool isEnd;
+
+    while (curr > 0) {
+        int i;
+        for (i = 0; i < line_width; i++) {
+            if (curr == 0) {
+                isEnd = true;
+                break;
+            }
+            curr--;
+            std::cout << top.at(curr) << std::flush;
+        }
+
+        std::cout << std::endl;
+
+        if (isEnd) {
+            curr += i;
+        } else {
+            curr += line_width - 1;
+        }
+
+        for (i = 0; i < line_width; i++) {
+            if (curr == 0) break;
+            curr--;
+            std::cout << bottom.at(curr) << std::flush;
+        }
+
+        std::cout << std::endl;
+        std::cout << std::endl;
+    }
+
+    print(duration);
+
     return 0;
 }

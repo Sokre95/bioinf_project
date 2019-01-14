@@ -4,7 +4,7 @@
 
 typedef unsigned long ulong;
 
-void Viterbi::alignSequences(Sequence *first, Sequence *second) {
+void Viterbi::alignSequences(Sequence *first, Sequence *second, std::vector<char>* top, std::vector<char>* bottom) {
     std::vector<char> first_sequence = first->getSequence();
     std::vector<char> second_sequence = second->getSequence();
 

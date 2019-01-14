@@ -10,7 +10,7 @@
 class Viterbi : public IViterbi {
 
 public:
-    void alignSequences(Sequence *first, Sequence *second) override;
+    void alignSequences(Sequence *first, Sequence *second, std::vector<char>* top, std::vector<char>* bottom) override;
 
     Viterbi(const float *transition_probabilities,
             float **emission_probabilities,
