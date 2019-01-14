@@ -74,7 +74,7 @@ int main(int argc, char* argv[]) {
 }
 
 void run_estimator(std::string path) {
-    std::cout << "Running estimator, please wait" << std::endl;
+    std::cout << "Running estimator, please wait..." << std::endl;
     auto *mleEstimator = new MleEstimator( (char*)path.c_str());
     mleEstimator->estimate();
 
@@ -253,6 +253,7 @@ void print_aligned_sequences_to_console(
         std::vector<char> bottom,
         int line_width = 80)
 {
+    std::cout << "Aligned sequences:" << std::endl;
     ulong curr = top.size() - 1;
 
     bool isEnd;
