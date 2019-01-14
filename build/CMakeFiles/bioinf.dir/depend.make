@@ -21,12 +21,18 @@ CMakeFiles/bioinf.dir/src/ViterbiLogOdds.cpp.o: ../include/Sequence.h
 CMakeFiles/bioinf.dir/src/ViterbiLogOdds.cpp.o: ../include/ViterbiLogOdds.h
 CMakeFiles/bioinf.dir/src/ViterbiLogOdds.cpp.o: ../src/ViterbiLogOdds.cpp
 
+CMakeFiles/bioinf.dir/src/ViterbiLogOddsOptimal.cpp.o: ../include/IViterbi.h
+CMakeFiles/bioinf.dir/src/ViterbiLogOddsOptimal.cpp.o: ../include/Sequence.h
+CMakeFiles/bioinf.dir/src/ViterbiLogOddsOptimal.cpp.o: ../include/ViterbiLogOddsOptimal.h
+CMakeFiles/bioinf.dir/src/ViterbiLogOddsOptimal.cpp.o: ../src/ViterbiLogOddsOptimal.cpp
+
 CMakeFiles/bioinf.dir/src/main.cpp.o: ../include/FastaParser.h
 CMakeFiles/bioinf.dir/src/main.cpp.o: ../include/IViterbi.h
 CMakeFiles/bioinf.dir/src/main.cpp.o: ../include/MleEstimator.h
 CMakeFiles/bioinf.dir/src/main.cpp.o: ../include/Sequence.h
 CMakeFiles/bioinf.dir/src/main.cpp.o: ../include/Viterbi.h
 CMakeFiles/bioinf.dir/src/main.cpp.o: ../include/ViterbiLogOdds.h
+CMakeFiles/bioinf.dir/src/main.cpp.o: ../include/ViterbiLogOddsOptimal.h
 CMakeFiles/bioinf.dir/src/main.cpp.o: ../include/cxxopts.hpp
 CMakeFiles/bioinf.dir/src/main.cpp.o: ../src/main.cpp
 

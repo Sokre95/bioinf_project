@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/coki/fer_projects/bioinf_project/src/Sequence.cpp" "/home/coki/fer_projects/bioinf_project/build/CMakeFiles/bioinf.dir/src/Sequence.cpp.o"
   "/home/coki/fer_projects/bioinf_project/src/Viterbi.cpp" "/home/coki/fer_projects/bioinf_project/build/CMakeFiles/bioinf.dir/src/Viterbi.cpp.o"
   "/home/coki/fer_projects/bioinf_project/src/ViterbiLogOdds.cpp" "/home/coki/fer_projects/bioinf_project/build/CMakeFiles/bioinf.dir/src/ViterbiLogOdds.cpp.o"
+  "/home/coki/fer_projects/bioinf_project/src/ViterbiLogOddsOptimal.cpp" "/home/coki/fer_projects/bioinf_project/build/CMakeFiles/bioinf.dir/src/ViterbiLogOddsOptimal.cpp.o"
   "/home/coki/fer_projects/bioinf_project/src/main.cpp" "/home/coki/fer_projects/bioinf_project/build/CMakeFiles/bioinf.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

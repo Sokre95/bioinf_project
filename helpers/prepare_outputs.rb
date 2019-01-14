@@ -23,7 +23,7 @@ end
 
 system 'mkdir', '-p', "#{DIR_PATH}/upcase/"
 
-Dir.foreach('#{DIR_PATH}') do |file_name|
+Dir.foreach("#{DIR_PATH}") do |file_name|
   if file_name.split('.').last == 'fasta'
     prepare_file(file_name)
   end

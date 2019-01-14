@@ -21,6 +21,11 @@ CMakeFiles/bioinf.dir/src/ViterbiLogOdds.cpp.o
  /home/coki/fer_projects/bioinf_project/include/Sequence.h
  /home/coki/fer_projects/bioinf_project/include/ViterbiLogOdds.h
  /home/coki/fer_projects/bioinf_project/src/ViterbiLogOdds.cpp
+CMakeFiles/bioinf.dir/src/ViterbiLogOddsOptimal.cpp.o
+ /home/coki/fer_projects/bioinf_project/include/IViterbi.h
+ /home/coki/fer_projects/bioinf_project/include/Sequence.h
+ /home/coki/fer_projects/bioinf_project/include/ViterbiLogOddsOptimal.h
+ /home/coki/fer_projects/bioinf_project/src/ViterbiLogOddsOptimal.cpp
 CMakeFiles/bioinf.dir/src/main.cpp.o
  /home/coki/fer_projects/bioinf_project/include/FastaParser.h
  /home/coki/fer_projects/bioinf_project/include/IViterbi.h
@@ -28,5 +33,6 @@ CMakeFiles/bioinf.dir/src/main.cpp.o
  /home/coki/fer_projects/bioinf_project/include/Sequence.h
  /home/coki/fer_projects/bioinf_project/include/Viterbi.h
  /home/coki/fer_projects/bioinf_project/include/ViterbiLogOdds.h
+ /home/coki/fer_projects/bioinf_project/include/ViterbiLogOddsOptimal.h
  /home/coki/fer_projects/bioinf_project/include/cxxopts.hpp
  /home/coki/fer_projects/bioinf_project/src/main.cpp
