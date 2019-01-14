@@ -9,21 +9,25 @@
 #include "ViterbiLogOdds.h"
 #include "MleEstimator.h"
 
-#define DEBUG 0
+//https://github.com/jarro2783/cxxopts
+#include "cxxopts.hpp"
+
 
 void run_viterbi(std::string filename);
 void run_estimator(std::string path);
 void load_params(float* averaged_transition_probabilities, float** emission_probabilities);
 
+void print_aligned_sequences_to_console(std::vector<char> top, std::vector<char> bottom, int line_width);
+void write_aligned_sequences_to_file(std::string file_path, std::vector<char> top, std::vector<char> bottom, bool single_line, int line_width);
+void write_sequence(std::ostream &os, std::vector<char> sequence, bool single_line, int line_width);
 void print_sequences(const std::vector<Sequence *> sequences);
 void print_options();
-
-void print(long duration);
+void print_duration(long duration);
 
 int main(int arg, char* argv[]) {
 
     if(arg < 2 || arg > 3){
-        std::cerr << "Wrong number of arguments";
+        std::cerr << "Wrong number of arguments" << std::endl;
         print_options();
         std::exit(EXIT_FAILURE);
     }
@@ -76,7 +80,6 @@ void run_estimator(std::string path) {
 }
 
 void run_viterbi(std::string file_path) {
-    std::cout << "Parsing input file..." << std::endl;
     FastaParser parser(file_path);
     const std::vector<Sequence *> sequences = parser.parse();
 
@@ -107,53 +110,11 @@ void run_viterbi(std::string file_path) {
 
     long duration = std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
 
-    // ispis...
+    write_aligned_sequences_to_file(file_path, top, bottom, false, 80);
 
-    /* for (auto it = top.rbegin(); it != top.rend(); ++it) {
-         std::cout << *it << std::flush;
-     }
+    print_aligned_sequences_to_console(top, bottom, 200);
 
-     std::cout << std::endl;
-
-     for (auto it = bottom.rbegin(); it != bottom.rend(); ++it) {
-         std::cout << *it << std::flush;
-     } */
-
-    const int line_width = 80;
-    ulong curr = top.size() - 1;
-
-    bool isEnd;
-
-    while (curr > 0) {
-        int i;
-        for (i = 0; i < line_width; i++) {
-            if (curr == 0) {
-                isEnd = true;
-                break;
-            }
-            curr--;
-            std::cout << top.at(curr) << std::flush;
-        }
-
-        std::cout << std::endl;
-
-        if (isEnd) {
-            curr += i;
-        } else {
-            curr += line_width - 1;
-        }
-
-        for (i = 0; i < line_width; i++) {
-            if (curr == 0) break;
-            curr--;
-            std::cout << bottom.at(curr) << std::flush;
-        }
-
-        std::cout << std::endl;
-        std::cout << std::endl;
-    }
-
-    print(duration);
+    print_duration(duration);
 }
 
 void load_params(float* averaged_transition_probabilities, float** emission_probabilities) {
@@ -221,13 +182,100 @@ void print_sequences(const std::vector<Sequence *> sequences) {
 void print_options() {
     std::cout << "Usage:" << std::endl;
     std::cout << "\tbioinf [options] PATH_TO_FILE_OR_FOLDER:" << std::endl << std::endl;
+
     std::cout << "Options" << std::endl;
-    std::cout << "\t-v [--viterbi] \t\t# Run sequence align algorithm on given pair in fasta file specified by PATH_TO_FILE_OR_FOLDER" << std::endl;
-    std::cout << "\t-e [--estimate]\t\t# Run hmm params estimator with path to learning database specified by PATH_TO_FILE_OR_FOLDER" << std::endl;
-    std::cout << "\t-h [--help]    \t\t# Show help" << std::endl;
+    std::cout << "\t-v          [--viterbi]               \t# Run sequence align algorithm on given pair in fasta file specified by PATH_TO_FILE_OR_FOLDER" << std::endl;
+    std::cout << "\t-e          [--estimate]              \t# Run hmm params estimator with path to learning database specified by PATH_TO_FILE_OR_FOLDER" << std::endl;
+    std::cout << "\t-o=<path>   [--out=<path>]            \t# [Use only with -v option] Write aligned sequences to file specified by <path>" << std::endl;
+    std::cout << "\t-m=N        [--multiline=N_CHARS]     \t# [Use only with -v option] Write aligned sequences in multiple lines, each line containg N chars. Default mode is single line writing" << std::endl;
+    std::cout << "\t-h          [--help]                  \t# Show help" << std::endl << std::endl;
+
+    std::cout << "Examples:" << std::endl;
+    std::cout << "\t ./bioinf --viterbi ../database/pairs/HIV/p1.fasta" << std::endl;
+
 }
 
-void print(long duration) {
+void print_duration(long duration) {
     std::cout << "Sequence alignment finished." << std::endl;
     std::cout << "Duration: " << duration << std::endl;
+}
+
+
+void write_aligned_sequences_to_file(std::string file_path, std::vector<char> top, std::vector<char> bottom, bool single_line, int line_width){
+
+    std::size_t last_slash_index = file_path.find_last_of("/");
+    std::string file_name = file_path.substr(last_slash_index +1);
+    std::string directory_path = file_path.substr(0, last_slash_index) + "/aligned/";
+
+    system( (std::string("mkdir -p ") + directory_path).c_str() );
+
+    std::ofstream aligned(directory_path + file_name, std::ofstream::out);
+
+    if (!aligned.good()){
+        std::cerr << "Error occurred while opening output file: " + directory_path + file_name << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+
+    std::cout << "Writing output to file: " + directory_path + file_name << std::endl;
+
+    aligned << ">" << file_name + "_top" << std::endl;
+    write_sequence(aligned, top, single_line, line_width);
+    aligned << std::endl;
+
+    aligned << ">" << file_name + "_bottom" << std::endl;
+    write_sequence(aligned, top, single_line, line_width);
+    aligned.close();
+}
+
+void write_sequence(std::ostream &os, std::vector<char> sequence, bool single_line, int line_width){
+    int curret_line_width = 0;
+    for(auto const& c: sequence) {
+        os << c << std::flush;
+        if (single_line == false){
+            curret_line_width++;
+            if (curret_line_width == line_width){
+                os << std::endl;
+                curret_line_width = 0;
+            }
+        }
+    }
+}
+
+void print_aligned_sequences_to_console(
+        std::vector<char> top,
+        std::vector<char> bottom,
+        int line_width = 80)
+{
+    ulong curr = top.size() - 1;
+
+    bool isEnd;
+
+    while (curr > 0) {
+        int i;
+        for (i = 0; i < line_width; i++) {
+            if (curr == 0) {
+                isEnd = true;
+                break;
+            }
+            curr--;
+            std::cout << top.at(curr) << std::flush;
+        }
+
+        std::cout << std::endl;
+
+        if (isEnd) {
+            curr += i;
+        } else {
+            curr += line_width - 1;
+        }
+
+        for (i = 0; i < line_width; i++) {
+            if (curr == 0) break;
+            curr--;
+            std::cout << bottom.at(curr) << std::flush;
+        }
+
+        std::cout << std::endl;
+        std::cout << std::endl;
+    }
 }

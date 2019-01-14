@@ -13,7 +13,7 @@ std::vector<Sequence*> FastaParser::parse() {
     std::string line;
 
     if (!file.good()){
-        std::cout << "Error occurred while opening file" << std::endl;
+        std::cout << "Error occurred while opening input file" << std::endl;
         std::exit(1);
     }
 
