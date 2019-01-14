@@ -81,7 +81,8 @@ void run_viterbi(std::string file_path) {
     const std::vector<Sequence *> sequences = parser.parse();
 
 #ifdef DEBUG
-    print_sequences(sequences);
+
+    // print_sequences(sequences);
 #endif
 
     float* averaged_transition_probabilities = new float[3];
@@ -157,7 +158,7 @@ void run_viterbi(std::string file_path) {
 }
 
 void load_params(float* averaged_transition_probabilities, float** emission_probabilities) {
-    std::ifstream params("../params.txt");
+    std::ifstream params("./params.txt");
     std::string line;
     std::string token;
     int i = 0;
@@ -229,5 +230,5 @@ void print_options() {
 
 void print(long duration) {
     std::cout << "Sequence alignment finished." << std::endl;
-    std::cout << "Duration: " << duration << std::endl;
+    std::cout << "Duration: " << duration << " s" << std::endl;
 }

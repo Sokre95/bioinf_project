@@ -1,0 +1,821 @@
+desc: (none)
+cmd: ./bioinf --viterbi ./database/pairs/hepatitis/p2.fasta
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=2207177
+mem_heap_B=72704
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=2318130
+mem_heap_B=72744
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=2345053
+mem_heap_B=74320
+mem_heap_extra_B=264
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=2390955
+mem_heap_B=86360
+mem_heap_extra_B=360
+mem_stacks_B=0
+heap_tree=detailed
+n5: 86360 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2374: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010731: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x1: ???
+     n1: 72704 0x1FFF0000A1: ???
+      n1: 72704 0x1FFF0000AA: ???
+       n0: 72704 0x1FFF0000B4: ???
+ n1: 8192 0x4F23156: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F27270: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F281FC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n1: 8192 0x10D0FB: FastaParser::parse() (FastaParser.cpp:12)
+     n1: 8192 0x10AF2C: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:81)
+      n0: 8192 0x10A925: main (main.cpp:35)
+ n1: 3126 0x4F57CF9: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 3126 0x4F59261: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 3126 0x4EDEDA1: std::basic_istream<char, std::char_traits<char> >& std::getline<char, std::char_traits<char>, std::allocator<char> >(std::basic_istream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n1: 3126 0x10D1D8: FastaParser::parse() (FastaParser.cpp:24)
+     n1: 3126 0x10AF2C: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:81)
+      n0: 3126 0x10A925: main (main.cpp:35)
+ n0: 1314 in 7 places, all below massif's threshold (1.00%)
+ n1: 1024 0x57F018A: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x5800377: _IO_doallocbuf (genops.c:365)
+   n1: 1024 0x57FF496: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:759)
+    n1: 1024 0x57FD9EB: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1266)
+     n1: 1024 0x57F1975: fwrite (iofwrite.c:39)
+      n1: 1024 0x4F46E92: std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+       n1: 1024 0x4F47205: std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+        n1: 1024 0x10AECC: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:79)
+         n0: 1024 0x10A925: main (main.cpp:35)
+#-----------
+snapshot=5
+#-----------
+time=2425718
+mem_heap_B=86856
+mem_heap_extra_B=360
+mem_stacks_B=0
+heap_tree=detailed
+n5: 86856 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2374: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010731: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x1: ???
+     n1: 72704 0x1FFF0000A1: ???
+      n1: 72704 0x1FFF0000AA: ???
+       n0: 72704 0x1FFF0000B4: ???
+ n1: 8192 0x4F23156: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F27270: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F281FC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n1: 8192 0x10D0FB: FastaParser::parse() (FastaParser.cpp:12)
+     n1: 8192 0x10AF2C: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:81)
+      n0: 8192 0x10A925: main (main.cpp:35)
+ n1: 3126 0x4F57CF9: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 3126 0x4F59261: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 3126 0x4EDEDA1: std::basic_istream<char, std::char_traits<char> >& std::getline<char, std::char_traits<char>, std::allocator<char> >(std::basic_istream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n1: 3126 0x10D1D8: FastaParser::parse() (FastaParser.cpp:24)
+     n1: 3126 0x10AF2C: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:81)
+      n0: 3126 0x10A925: main (main.cpp:35)
+ n0: 1810 in 7 places, all below massif's threshold (1.00%)
+ n1: 1024 0x57F018A: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x5800377: _IO_doallocbuf (genops.c:365)
+   n1: 1024 0x57FF496: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:759)
+    n1: 1024 0x57FD9EB: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1266)
+     n1: 1024 0x57F1975: fwrite (iofwrite.c:39)
+      n1: 1024 0x4F46E92: std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+       n1: 1024 0x4F47205: std::basic_ostream<char, std::char_traits<char> >& std::operator<< <std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+        n1: 1024 0x10AECC: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:79)
+         n0: 1024 0x10A925: main (main.cpp:35)
+#-----------
+snapshot=6
+#-----------
+time=2456667
+mem_heap_B=87368
+mem_heap_extra_B=360
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=2516402
+mem_heap_B=89416
+mem_heap_extra_B=368
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=2517364
+mem_heap_B=88392
+mem_heap_extra_B=360
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=2636491
+mem_heap_B=92488
+mem_heap_extra_B=368
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=2637557
+mem_heap_B=90440
+mem_heap_extra_B=360
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=2763032
+mem_heap_B=93565
+mem_heap_extra_B=379
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=2781716
+mem_heap_B=103062
+mem_heap_extra_B=426
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=3257367
+mem_heap_B=111254
+mem_heap_extra_B=434
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=3258641
+mem_heap_B=107158
+mem_heap_extra_B=426
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=3734120
+mem_heap_B=123542
+mem_heap_extra_B=434
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=3743168
+mem_heap_B=115350
+mem_heap_extra_B=426
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=3912231
+mem_heap_B=124996
+mem_heap_extra_B=436
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=3923482
+mem_heap_B=125012
+mem_heap_extra_B=444
+mem_stacks_B=0
+heap_tree=detailed
+n5: 125012 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 72704 0x4EC2374: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 72704 0x4010731: _dl_init (dl-init.c:72)
+   n1: 72704 0x40010C8: ??? (in /lib/x86_64-linux-gnu/ld-2.27.so)
+    n1: 72704 0x1: ???
+     n1: 72704 0x1FFF0000A1: ???
+      n1: 72704 0x1FFF0000AA: ???
+       n0: 72704 0x1FFF0000B4: ???
+ n1: 29155 0x10E6A2: __gnu_cxx::new_allocator<char>::allocate(unsigned long, void const*) (new_allocator.h:111)
+  n1: 29155 0x10E4F0: std::allocator_traits<std::allocator<char> >::allocate(std::allocator<char>&, unsigned long) (alloc_traits.h:436)
+   n2: 29155 0x10E2F8: std::_Vector_base<char, std::allocator<char> >::_M_allocate(unsigned long) (stl_vector.h:172)
+    n1: 16384 0x10DC14: void std::vector<char, std::allocator<char> >::_M_realloc_insert<char const&>(__gnu_cxx::__normal_iterator<char*, std::vector<char, std::allocator<char> > >, char const&) (vector.tcc:406)
+     n1: 16384 0x10D6AC: std::vector<char, std::allocator<char> >::push_back(char const&) (stl_vector.h:948)
+      n1: 16384 0x10D38D: FastaParser::parse() (FastaParser.cpp:39)
+       n1: 16384 0x10AF2C: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:81)
+        n0: 16384 0x10A925: main (main.cpp:35)
+    n1: 12771 0x10EEA8: char* std::vector<char, std::allocator<char> >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > > >(unsigned long, __gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >, __gnu_cxx::__normal_iterator<char const*, std::vector<char, std::allocator<char> > >) (stl_vector.h:1260)
+     n1: 12771 0x10EC51: std::vector<char, std::allocator<char> >::operator=(std::vector<char, std::allocator<char> > const&) (vector.tcc:206)
+      n2: 12771 0x10EAB5: Sequence::setSequence(std::vector<char, std::allocator<char> > const&) (Sequence.cpp:16)
+       n1: 9646 0x10D3B5: FastaParser::parse() (FastaParser.cpp:44)
+        n1: 9646 0x10AF2C: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:81)
+         n0: 9646 0x10A925: main (main.cpp:35)
+       n1: 3125 0x10D263: FastaParser::parse() (FastaParser.cpp:30)
+        n1: 3125 0x10AF2C: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:81)
+         n0: 3125 0x10A925: main (main.cpp:35)
+ n1: 12501 0x4F57CF9: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 12501 0x4F59261: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 12501 0x4EDEDA1: std::basic_istream<char, std::char_traits<char> >& std::getline<char, std::char_traits<char>, std::allocator<char> >(std::basic_istream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n1: 12501 0x10D1D8: FastaParser::parse() (FastaParser.cpp:24)
+     n1: 12501 0x10AF2C: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:81)
+      n0: 12501 0x10A925: main (main.cpp:35)
+ n1: 8192 0x4F23156: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+  n1: 8192 0x4F27270: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+   n1: 8192 0x4F281FC: std::basic_ifstream<char, std::char_traits<char> >::basic_ifstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+    n1: 8192 0x10D0FB: FastaParser::parse() (FastaParser.cpp:12)
+     n1: 8192 0x10AF2C: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:81)
+      n0: 8192 0x10A925: main (main.cpp:35)
+ n0: 2460 in 9 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=19
+#-----------
+time=3967080
+mem_heap_B=96321
+mem_heap_extra_B=519
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=4003765
+mem_heap_B=88151
+mem_heap_extra_B=761
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=4057451
+mem_heap_B=33183595
+mem_heap_extra_B=11261
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=4100801
+mem_heap_B=65983395
+mem_heap_extra_B=21461
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=4128545
+mem_heap_B=86975267
+mem_heap_extra_B=27989
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=4158023
+mem_heap_B=109279131
+mem_heap_extra_B=34925
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=4201386
+mem_heap_B=142065351
+mem_heap_extra_B=45121
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=4230864
+mem_heap_B=164369215
+mem_heap_extra_B=52057
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=4276764
+mem_heap_B=199098415
+mem_heap_extra_B=62857
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=4306140
+mem_heap_B=221325103
+mem_heap_extra_B=69769
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=4347463
+mem_heap_B=252567803
+mem_heap_extra_B=79485
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=4368577
+mem_heap_B=268543235
+mem_heap_extra_B=84453
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=4414477
+mem_heap_B=303272435
+mem_heap_extra_B=95253
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=4443853
+mem_heap_B=325499123
+mem_heap_extra_B=102165
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=4491589
+mem_heap_B=361617491
+mem_heap_extra_B=113397
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=4837115
+mem_heap_B=362066959
+mem_heap_extra_B=113545
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=4865635
+mem_heap_B=368047479
+mem_heap_extra_B=119745
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=4896915
+mem_heap_B=374606759
+mem_heap_extra_B=126545
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=4927827
+mem_heap_B=381088871
+mem_heap_extra_B=133265
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=4960671
+mem_heap_B=387976115
+mem_heap_extra_B=140405
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=4993531
+mem_heap_B=394878713
+mem_heap_extra_B=147551
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=5041831
+mem_heap_B=405007013
+mem_heap_extra_B=158051
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=5072743
+mem_heap_B=411489125
+mem_heap_extra_B=164771
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=5105587
+mem_heap_B=418376369
+mem_heap_extra_B=171911
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=5138447
+mem_heap_B=425278967
+mem_heap_extra_B=179057
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=5186747
+mem_heap_B=435407267
+mem_heap_extra_B=189557
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=5217659
+mem_heap_B=441889379
+mem_heap_extra_B=196277
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=5267891
+mem_heap_B=452422811
+mem_heap_extra_B=207197
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=143099961239
+mem_heap_B=452548257
+mem_heap_extra_B=207335
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=143099967584
+mem_heap_B=452548357
+mem_heap_extra_B=207419
+mem_stacks_B=0
+heap_tree=peak
+n3: 452548357 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 361878264 0x1168D2: float** create2dArray<float>(unsigned long, unsigned long) (ViterbiLogOdds.cpp:29)
+  n1: 120626088 0x11588B: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:45)
+   n1: 120626088 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 120626088 0x10A925: main (main.cpp:35)
+  n1: 120626088 0x1158B3: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:46)
+   n1: 120626088 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 120626088 0x10A925: main (main.cpp:35)
+  n1: 120626088 0x1158DB: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:47)
+   n1: 120626088 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 120626088 0x10A925: main (main.cpp:35)
+ n3: 90431250 0x116955: unsigned char** create2dArray<unsigned char>(unsigned long, unsigned long) (ViterbiLogOdds.cpp:29)
+  n1: 30143750 0x115AD9: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:70)
+   n1: 30143750 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 30143750 0x10A925: main (main.cpp:35)
+  n1: 30143750 0x115AF9: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:71)
+   n1: 30143750 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 30143750 0x10A925: main (main.cpp:35)
+  n1: 30143750 0x115B19: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:72)
+   n1: 30143750 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 30143750 0x10A925: main (main.cpp:35)
+ n0: 238843 in 20 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=49
+#-----------
+time=143100003920
+mem_heap_B=452548513
+mem_heap_extra_B=207375
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=143100030577
+mem_heap_B=452548609
+mem_heap_extra_B=207375
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=143100031920
+mem_heap_B=452548673
+mem_heap_extra_B=207375
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=143100083941
+mem_heap_B=452548865
+mem_heap_extra_B=207391
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=143100085302
+mem_heap_B=452548993
+mem_heap_extra_B=207391
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=143100185672
+mem_heap_B=452549377
+mem_heap_extra_B=207391
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=143100187033
+mem_heap_B=452549633
+mem_heap_extra_B=207375
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=143100392012
+mem_heap_B=452550401
+mem_heap_extra_B=207375
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=143100393416
+mem_heap_B=452550913
+mem_heap_extra_B=207375
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=143100800597
+mem_heap_B=452552449
+mem_heap_extra_B=207375
+mem_stacks_B=0
+heap_tree=detailed
+n3: 452552449 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 361878264 0x1168D2: float** create2dArray<float>(unsigned long, unsigned long) (ViterbiLogOdds.cpp:29)
+  n1: 120626088 0x11588B: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:45)
+   n1: 120626088 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 120626088 0x10A925: main (main.cpp:35)
+  n1: 120626088 0x1158B3: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:46)
+   n1: 120626088 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 120626088 0x10A925: main (main.cpp:35)
+  n1: 120626088 0x1158DB: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:47)
+   n1: 120626088 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 120626088 0x10A925: main (main.cpp:35)
+ n3: 90431250 0x116955: unsigned char** create2dArray<unsigned char>(unsigned long, unsigned long) (ViterbiLogOdds.cpp:29)
+  n1: 30143750 0x115AD9: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:70)
+   n1: 30143750 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 30143750 0x10A925: main (main.cpp:35)
+  n1: 30143750 0x115AF9: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:71)
+   n1: 30143750 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 30143750 0x10A925: main (main.cpp:35)
+  n1: 30143750 0x115B19: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:72)
+   n1: 30143750 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 30143750 0x10A925: main (main.cpp:35)
+ n0: 242935 in 20 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=59
+#-----------
+time=143100801559
+mem_heap_B=452551425
+mem_heap_extra_B=207367
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=143100803015
+mem_heap_B=452552449
+mem_heap_extra_B=207367
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=143101607610
+mem_heap_B=452556545
+mem_heap_extra_B=207375
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=143101608677
+mem_heap_B=452554497
+mem_heap_extra_B=207367
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=63
+#-----------
+time=143101610237
+mem_heap_B=452556545
+mem_heap_extra_B=207367
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=143103203548
+mem_heap_B=452564737
+mem_heap_extra_B=207375
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=65
+#-----------
+time=143103204823
+mem_heap_B=452560641
+mem_heap_extra_B=207367
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=143103206591
+mem_heap_B=452564737
+mem_heap_extra_B=207367
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=143106433338
+mem_heap_B=452581121
+mem_heap_extra_B=207375
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=143106442386
+mem_heap_B=452572929
+mem_heap_extra_B=207367
+mem_stacks_B=0
+heap_tree=detailed
+n3: 452572929 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 361878264 0x1168D2: float** create2dArray<float>(unsigned long, unsigned long) (ViterbiLogOdds.cpp:29)
+  n1: 120626088 0x11588B: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:45)
+   n1: 120626088 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 120626088 0x10A925: main (main.cpp:35)
+  n1: 120626088 0x1158B3: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:46)
+   n1: 120626088 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 120626088 0x10A925: main (main.cpp:35)
+  n1: 120626088 0x1158DB: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:47)
+   n1: 120626088 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 120626088 0x10A925: main (main.cpp:35)
+ n3: 90431250 0x116955: unsigned char** create2dArray<unsigned char>(unsigned long, unsigned long) (ViterbiLogOdds.cpp:29)
+  n1: 30143750 0x115AD9: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:70)
+   n1: 30143750 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 30143750 0x10A925: main (main.cpp:35)
+  n1: 30143750 0x115AF9: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:71)
+   n1: 30143750 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 30143750 0x10A925: main (main.cpp:35)
+  n1: 30143750 0x115B19: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:72)
+   n1: 30143750 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 30143750 0x10A925: main (main.cpp:35)
+ n0: 263415 in 20 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=69
+#-----------
+time=143106451928
+mem_heap_B=452581121
+mem_heap_extra_B=207367
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=70
+#-----------
+time=143107631131
+mem_heap_B=452556113
+mem_heap_extra_B=207359
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=71
+#-----------
+time=143117712226
+mem_heap_B=452414569
+mem_heap_extra_B=207263
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=72
+#-----------
+time=143117713337
+mem_heap_B=452398025
+mem_heap_extra_B=207191
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=73
+#-----------
+time=143117714375
+mem_heap_B=452397825
+mem_heap_extra_B=207095
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=74
+#-----------
+time=143117715397
+mem_heap_B=452397649
+mem_heap_extra_B=207023
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=75
+#-----------
+time=143117716564
+mem_heap_B=452397381
+mem_heap_extra_B=206899
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=76
+#-----------
+time=143117717602
+mem_heap_B=452397181
+mem_heap_extra_B=206819
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=77
+#-----------
+time=143117726482
+mem_heap_B=452324317
+mem_heap_extra_B=206747
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=78
+#-----------
+time=143117728104
+mem_heap_B=452323293
+mem_heap_extra_B=206739
+mem_stacks_B=0
+heap_tree=detailed
+n3: 452323293 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 361878264 0x1168D2: float** create2dArray<float>(unsigned long, unsigned long) (ViterbiLogOdds.cpp:29)
+  n1: 120626088 0x11588B: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:45)
+   n1: 120626088 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 120626088 0x10A925: main (main.cpp:35)
+  n1: 120626088 0x1158B3: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:46)
+   n1: 120626088 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 120626088 0x10A925: main (main.cpp:35)
+  n1: 120626088 0x1158DB: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:47)
+   n1: 120626088 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 120626088 0x10A925: main (main.cpp:35)
+ n3: 90431250 0x116955: unsigned char** create2dArray<unsigned char>(unsigned long, unsigned long) (ViterbiLogOdds.cpp:29)
+  n1: 30143750 0x115AD9: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:70)
+   n1: 30143750 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 30143750 0x10A925: main (main.cpp:35)
+  n1: 30143750 0x115AF9: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:71)
+   n1: 30143750 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 30143750 0x10A925: main (main.cpp:35)
+  n1: 30143750 0x115B19: ViterbiLogOdds::alignSequences(Sequence*, Sequence*, std::vector<char, std::allocator<char> >*, std::vector<char, std::allocator<char> >*) (ViterbiLogOdds.cpp:72)
+   n1: 30143750 0x10B091: run_viterbi(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (main.cpp:105)
+    n0: 30143750 0x10A925: main (main.cpp:35)
+ n0: 13779 in 20 places, all below massif's threshold (1.00%)

@@ -4,12 +4,12 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/coki/fer_projects/bioinf_project/FastaParser.cpp" "/home/coki/fer_projects/bioinf_project/CMakeFiles/bioinf.dir/FastaParser.cpp.o"
-  "/home/coki/fer_projects/bioinf_project/MleEstimator.cpp" "/home/coki/fer_projects/bioinf_project/CMakeFiles/bioinf.dir/MleEstimator.cpp.o"
-  "/home/coki/fer_projects/bioinf_project/Sequence.cpp" "/home/coki/fer_projects/bioinf_project/CMakeFiles/bioinf.dir/Sequence.cpp.o"
-  "/home/coki/fer_projects/bioinf_project/Viterbi.cpp" "/home/coki/fer_projects/bioinf_project/CMakeFiles/bioinf.dir/Viterbi.cpp.o"
-  "/home/coki/fer_projects/bioinf_project/ViterbiLogOdds.cpp" "/home/coki/fer_projects/bioinf_project/CMakeFiles/bioinf.dir/ViterbiLogOdds.cpp.o"
-  "/home/coki/fer_projects/bioinf_project/main.cpp" "/home/coki/fer_projects/bioinf_project/CMakeFiles/bioinf.dir/main.cpp.o"
+  "/home/martin/Source/bioinf_project/FastaParser.cpp" "/home/martin/Source/bioinf_project/CMakeFiles/bioinf.dir/FastaParser.cpp.o"
+  "/home/martin/Source/bioinf_project/MleEstimator.cpp" "/home/martin/Source/bioinf_project/CMakeFiles/bioinf.dir/MleEstimator.cpp.o"
+  "/home/martin/Source/bioinf_project/Sequence.cpp" "/home/martin/Source/bioinf_project/CMakeFiles/bioinf.dir/Sequence.cpp.o"
+  "/home/martin/Source/bioinf_project/Viterbi.cpp" "/home/martin/Source/bioinf_project/CMakeFiles/bioinf.dir/Viterbi.cpp.o"
+  "/home/martin/Source/bioinf_project/ViterbiLogOdds.cpp" "/home/martin/Source/bioinf_project/CMakeFiles/bioinf.dir/ViterbiLogOdds.cpp.o"
+  "/home/martin/Source/bioinf_project/main.cpp" "/home/martin/Source/bioinf_project/CMakeFiles/bioinf.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

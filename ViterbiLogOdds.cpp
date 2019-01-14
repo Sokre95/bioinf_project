@@ -75,6 +75,9 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second, std::vect
     float maxVal;
 
     for (ulong i = 1; i < n + 1; i++) {
+
+        std::cout << "Progress(" << i << "/" << n << ")" << std::endl;
+
         for (ulong j = 1; j < m + 1; j++) {
             if (i == 1 && j == 1) continue;
             float vm = viterbi_match[i - 1][j - 1];
