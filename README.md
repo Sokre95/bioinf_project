@@ -7,13 +7,16 @@ Project repository for [Bioinformatics course](http://www.fer.unizg.hr/predmet/b
 ## Description
 Main goal of this project is implementation of an algorithm for pairwise sequence alignment using HMM.
 
+* [Project documentation](https://github.com/Sokre95/bioinf_project/blob/master/documentation/dokumentacija.pdf)
+* [Presentation](https://github.com/Sokre95/bioinf_project/blob/master/documentation/Presentation.pdf)
+
 ## Authors
 - [Tomislav Božurić](https://github.com/tbozuric)
 - [Martin Pisačić ](https://github.com/mpisacic)
 - [Krešimir Topolovec](https://github.com/Sokre95)
 
 ## Installation 
-  Clone this repo and go to ./build directory
+  Clone this repo and go to `./build` directory
   ```
   git clone git@github.com:Sokre95/bioinf_project.git
   cd bioinf_project/build
@@ -41,6 +44,7 @@ Usage:
   -m, --multiline [=N(=100)]  # [Use only with -v option] Write/Print aligned sequences in multiple lines, each line
                                 containg N chars
   -p, --progress              # Show progress while running algorithm
+  -t, --mem-optimized         # Run memory optimized version of Viterbi algorithm
   -h, --help                  # Show help
 ```
 ## Input
@@ -57,6 +61,8 @@ Estimate HMM parameters (probabilities) using `outputs_mafft/upcase` as learning
 ./bioinf --estimate ../database/outputs_mafft/upcase
 
 ```
+## Project structure
+All c++ files are located in `/src` and `/include` folder. In `/helpers` folder are small python and ruby scripts used as a help in development of this project. 
  
 License
 ---------
