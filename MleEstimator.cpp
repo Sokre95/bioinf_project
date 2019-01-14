@@ -175,6 +175,7 @@ void MleEstimator::estimate() {
         closedir(dir);
     } else {
         perror("Could not open directory");
+        std::exit(1);
     }
 }
 
