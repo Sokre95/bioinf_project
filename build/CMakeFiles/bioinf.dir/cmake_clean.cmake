@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/bioinf.dir/src/Sequence.cpp.o"
   "CMakeFiles/bioinf.dir/src/Viterbi.cpp.o"
   "CMakeFiles/bioinf.dir/src/ViterbiLogOdds.cpp.o"
+  "CMakeFiles/bioinf.dir/src/ViterbiLogOddsOptimal.cpp.o"
   "CMakeFiles/bioinf.dir/src/main.cpp.o"
   "bioinf.pdb"
   "bioinf"

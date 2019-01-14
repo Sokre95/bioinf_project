@@ -48,6 +48,12 @@ map
 IViterbi.h
 /home/coki/fer_projects/bioinf_project/include/IViterbi.h
 
+/home/coki/fer_projects/bioinf_project/include/ViterbiLogOddsOptimal.h
+map
+-
+IViterbi.h
+/home/coki/fer_projects/bioinf_project/include/IViterbi.h
+
 /home/coki/fer_projects/bioinf_project/include/cxxopts.hpp
 cstring
 -
@@ -126,6 +132,18 @@ cstring
 iostream
 -
 
+/home/coki/fer_projects/bioinf_project/src/ViterbiLogOddsOptimal.cpp
+../include/ViterbiLogOddsOptimal.h
+/home/coki/fer_projects/bioinf_project/include/ViterbiLogOddsOptimal.h
+cmath
+-
+limits
+-
+cstring
+-
+iostream
+-
+
 /home/coki/fer_projects/bioinf_project/src/main.cpp
 iostream
 -
@@ -143,6 +161,8 @@ bits/stdc++.h
 /home/coki/fer_projects/bioinf_project/include/Viterbi.h
 ../include/ViterbiLogOdds.h
 /home/coki/fer_projects/bioinf_project/include/ViterbiLogOdds.h
+../include/ViterbiLogOddsOptimal.h
+/home/coki/fer_projects/bioinf_project/include/ViterbiLogOddsOptimal.h
 ../include/MleEstimator.h
 /home/coki/fer_projects/bioinf_project/include/MleEstimator.h
 ../include/cxxopts.hpp

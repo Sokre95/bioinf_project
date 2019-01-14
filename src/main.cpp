@@ -31,6 +31,7 @@ bool write_to_file = true;
 bool multiline = false;
 int line_width = 80;
 bool show_progress = false;
+bool mem_opt = false;
 
 int main(int argc, char* argv[]) {
 
@@ -41,6 +42,7 @@ int main(int argc, char* argv[]) {
             ("c,console" ,"# [Use only with -v option] Print aligned sequences to console")
             ("m,multiline", "# [Use only with -v option] Write/Print aligned sequences in multiple lines, each line containg N chars", cxxopts::value<int>()->implicit_value("100"), "N")
             ("p,progress", "# Show progress while running algorithm")
+            ("t,mem-optimized", "# Run memory optimized version of Viterbi algorithm")
             ("h,help", "# Show help");
 
     auto result = options.parse(argc, argv);
@@ -62,6 +64,9 @@ int main(int argc, char* argv[]) {
         }
         if(result.count("progress") > 0){
             show_progress = true;
+        }
+        if(result.count("mem-optimized") > 0){
+            mem_opt = true;
         }
         if(result.count("multiline") > 0){
             line_width = result["multiline"].as<int>();
@@ -124,10 +129,21 @@ void run_viterbi(std::string file_path) {
     load_params(averaged_transition_probabilities, emission_probabilities);
     std::map <char, int> lookup_copy(MleEstimator::lookupTable);
 
-    std::cout << "Running Viterbi algorithm. Please wait..." << std::endl;
-    auto *logOdds = new ViterbiLogOddsOptimal(averaged_transition_probabilities,
-                                       emission_probabilities,
-                                       lookup_copy, 0.01, show_progress);
+
+    IViterbi *logOdds = nullptr;
+
+    if(mem_opt == true){
+        std::cout << "Running memory optimized ViterbiLogOdds algorithm. Please wait..." << std::endl;
+        logOdds = new ViterbiLogOddsOptimal(averaged_transition_probabilities,
+                                     emission_probabilities,
+                                     lookup_copy, 0.01, show_progress);
+    }
+    else{
+        std::cout << "Running ViterbiLogOdds algorithm. Please wait..." << std::endl;
+        logOdds = new ViterbiLogOdds(averaged_transition_probabilities,
+                             emission_probabilities,
+                             lookup_copy, 0.01, show_progress);
+    }
 
     std::vector<char> top;
     std::vector<char> bottom;

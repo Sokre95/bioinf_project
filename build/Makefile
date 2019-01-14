@@ -304,6 +304,33 @@ src/ViterbiLogOdds.cpp.s:
 	$(MAKE) -f CMakeFiles/bioinf.dir/build.make CMakeFiles/bioinf.dir/src/ViterbiLogOdds.cpp.s
 .PHONY : src/ViterbiLogOdds.cpp.s
 
+src/ViterbiLogOddsOptimal.o: src/ViterbiLogOddsOptimal.cpp.o
+
+.PHONY : src/ViterbiLogOddsOptimal.o
+
+# target to build an object file
+src/ViterbiLogOddsOptimal.cpp.o:
+	$(MAKE) -f CMakeFiles/bioinf.dir/build.make CMakeFiles/bioinf.dir/src/ViterbiLogOddsOptimal.cpp.o
+.PHONY : src/ViterbiLogOddsOptimal.cpp.o
+
+src/ViterbiLogOddsOptimal.i: src/ViterbiLogOddsOptimal.cpp.i
+
+.PHONY : src/ViterbiLogOddsOptimal.i
+
+# target to preprocess a source file
+src/ViterbiLogOddsOptimal.cpp.i:
+	$(MAKE) -f CMakeFiles/bioinf.dir/build.make CMakeFiles/bioinf.dir/src/ViterbiLogOddsOptimal.cpp.i
+.PHONY : src/ViterbiLogOddsOptimal.cpp.i
+
+src/ViterbiLogOddsOptimal.s: src/ViterbiLogOddsOptimal.cpp.s
+
+.PHONY : src/ViterbiLogOddsOptimal.s
+
+# target to generate assembly for a file
+src/ViterbiLogOddsOptimal.cpp.s:
+	$(MAKE) -f CMakeFiles/bioinf.dir/build.make CMakeFiles/bioinf.dir/src/ViterbiLogOddsOptimal.cpp.s
+.PHONY : src/ViterbiLogOddsOptimal.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -359,6 +386,9 @@ help:
 	@echo "... src/ViterbiLogOdds.o"
 	@echo "... src/ViterbiLogOdds.i"
 	@echo "... src/ViterbiLogOdds.s"
+	@echo "... src/ViterbiLogOddsOptimal.o"
+	@echo "... src/ViterbiLogOddsOptimal.i"
+	@echo "... src/ViterbiLogOddsOptimal.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
