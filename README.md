@@ -26,7 +26,7 @@ Main goal of this project is implementation of an algorithm for pairwise sequenc
 Execute `./bioinf --help` to print command info
 
 ```
-Run either with -v [--viterbi] or -e [--estimate] option. Both options can't be used at same time
+Run either with -v [--viterbi] or -e [--estimate] option. Both options can't be used at the  same time
 Usage:
   bioinf [OPTION...]
 
@@ -40,15 +40,16 @@ Usage:
   -c, --console               # [Use only with -v option] Print aligned sequences to console
   -m, --multiline [=N(=100)]  # [Use only with -v option] Write/Print aligned sequences in multiple lines, each line
                                 containg N chars
+  -p, --progress              # Show progress while running algorithm
   -h, --help                  # Show help
 ```
 ## Input
-All input files must be in FASTA format and can be placed in arbitrary location. You must always specify path to file or folder you are using.
+All input files must be in FASTA format and can be placed in arbitrary location. You always have to specify path to the file or folder you are using.
 
 ## Examples
 Run sequence alignment for `p2.fasta` file writing 200 chars in each line of output file and print output to console also
 ```
-./bioinf --viterbi ../database/pairs/hepatitis/p2.fasta --console --multiline=200
+./bioinf --viterbi ../database/pairs/hepatitis/p2.fasta --console --multiline=200 --progress
 
 ```
 Estimate HMM parameters (probabilities) using `outputs_mafft/upcase` as learning database
