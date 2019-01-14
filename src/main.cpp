@@ -29,7 +29,7 @@ bool print_to_console = false;
 bool write_to_file = true;
 bool multiline = false;
 int line_width = 100;
-bool progress = false;
+bool show_progress = false;
 
 int main(int argc, char* argv[]) {
 
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
             ("o,out", "# [Use only with -v option] Write aligned sequences to ./aligned/{pair_file_name}.fasta", cxxopts::value<std::string>()->default_value("true"))
             ("c,console" ,"# [Use only with -v option] Print aligned sequences to console")
             ("m,multiline", "# [Use only with -v option] Write/Print aligned sequences in multiple lines, each line containg N chars", cxxopts::value<int>()->implicit_value("100"), "N")
-            ("p,progress", "# Show progress while running al")
+            ("p,progress", "# Show progress while running algorithm")
             ("h,help", "# Show help");
 
     auto result = options.parse(argc, argv);
@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
             print_to_console = true;
         }
         if(result.count("progress") > 0){
-            progress = true;
+            show_progress = true;
         }
         if(result.count("multiline") > 0){
             line_width = result["multiline"].as<int>();
@@ -126,7 +126,7 @@ void run_viterbi(std::string file_path) {
     std::cout << "Running Viterbi algorithm. Please wait..." << std::endl;
     auto *logOdds = new ViterbiLogOdds(averaged_transition_probabilities,
                                        emission_probabilities,
-                                       lookup_copy, 0.01, true);
+                                       lookup_copy, 0.01, show_progress);
 
     std::vector<char> top;
     std::vector<char> bottom;
