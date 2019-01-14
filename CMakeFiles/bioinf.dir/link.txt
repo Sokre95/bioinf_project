@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/bioinf.dir/main.cpp.o CMakeFiles/bioinf.dir/FastaParser.cpp.o CMakeFiles/bioinf.dir/Sequence.cpp.o CMakeFiles/bioinf.dir/Viterbi.cpp.o CMakeFiles/bioinf.dir/ViterbiLogOdds.cpp.o CMakeFiles/bioinf.dir/MleEstimator.cpp.o  -o bioinf 
