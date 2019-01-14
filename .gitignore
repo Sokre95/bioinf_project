@@ -34,7 +34,7 @@
 
 .idea/
 cmake-build-debug
-CMakeFiles
+build
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

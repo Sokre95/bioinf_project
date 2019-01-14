@@ -1,6 +1,6 @@
 #include <cstring>
 #include <iostream>
-#include "Viterbi.h"
+#include "../include/Viterbi.h"
 
 typedef unsigned long ulong;
 

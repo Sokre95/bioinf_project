@@ -2,7 +2,7 @@
 // Created by coki on 04.01.19..
 //
 
-#include "Sequence.h"
+#include "../include/Sequence.h"
 
 const std::string &Sequence::getDescription() const {
     return description;

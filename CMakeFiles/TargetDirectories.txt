@@ -1,7 +1,0 @@
-/home/coki/fer_projects/bioinf_project/CMakeFiles/install/strip.dir
-/home/coki/fer_projects/bioinf_project/CMakeFiles/edit_cache.dir
-/home/coki/fer_projects/bioinf_project/CMakeFiles/bioinf.dir
-/home/coki/fer_projects/bioinf_project/CMakeFiles/rebuild_cache.dir
-/home/coki/fer_projects/bioinf_project/CMakeFiles/list_install_components.dir
-/home/coki/fer_projects/bioinf_project/CMakeFiles/install/local.dir
-/home/coki/fer_projects/bioinf_project/CMakeFiles/install.dir

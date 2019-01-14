@@ -2,7 +2,7 @@
 // Created by tomo on 1/8/19.
 //
 
-#include "ViterbiLogOdds.h"
+#include "../include/ViterbiLogOdds.h"
 #include <cmath>
 #include <limits>
 #include <cstring>

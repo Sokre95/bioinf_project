@@ -4,13 +4,13 @@
 #include <iterator>
 #include <bits/stdc++.h>
 
-#include "FastaParser.h"
-#include "Viterbi.h"
-#include "ViterbiLogOdds.h"
-#include "MleEstimator.h"
+#include "../include/FastaParser.h"
+#include "../include/Viterbi.h"
+#include "../include/ViterbiLogOdds.h"
+#include "../include/MleEstimator.h"
 
 //https://github.com/jarro2783/cxxopts
-#include "cxxopts.hpp"
+#include "../include/cxxopts.hpp"
 
 
 void run_viterbi(std::string filename);

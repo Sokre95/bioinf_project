@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "FastaParser.h"
+#include "../include/FastaParser.h"
 
 FastaParser::FastaParser(const std::string f) : filepath(f){
     std::cout << "Filepath: " << filepath << std::endl;

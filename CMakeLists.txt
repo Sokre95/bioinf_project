@@ -1,10 +1,13 @@
-cmake_minimum_required(VERSION 3.10.3)
+cmake_minimum_required(VERSION 3.10.2)
 
 set(CMAKE_CXX_STANDARD 14)
-SET(CMAKE_INSTALL_PREFIX ./cmake-build-debug)
+SET(CMAKE_INSTALL_PREFIX ./build)
 
-project(bioinf)
+project(bioinf_project)
 
-add_executable(bioinf main.cpp FastaParser.h FastaParser.cpp Sequence.cpp Sequence.h Viterbi.cpp Viterbi.h IViterbi.h ViterbiLogOdds.cpp ViterbiLogOdds.h MleEstimator.cpp MleEstimator.h)
+include_directories(include)
+file(GLOB SOURCES "src/*")
 
-install(TARGETS bioinf DESTINATION ./)
+add_executable(bioinf ${SOURCES})
+
+install(TARGETS bioinf DESTINATION /)

@@ -1,1 +1,0 @@
-/home/coki/fer_projects/bioinf_project/./cmake-build-debug/./bioinf
