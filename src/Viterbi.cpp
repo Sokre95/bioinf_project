@@ -63,7 +63,7 @@ void Viterbi::alignSequences(Sequence *first, Sequence *second, std::vector<char
 
         v1 = delta * viterbi_match[0]; // iz M u X
         v2 = epsilon * viterbi_insert_x[0]; // iz X u X
-        max = (float) this->max(v1, v2, M, X, &previous);
+        max = this->max(v1, v2, M, X, &previous);
 
         tmp_x[0] = emission_probabilities[lookup.at(first_sequence.at(i))][lookup.at('-')] * max;
         *(transitions_x + i * n + 0) = previous;
