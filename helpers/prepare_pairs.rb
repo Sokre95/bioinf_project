@@ -1,7 +1,7 @@
 require 'bio'
 require 'pry'
 
-FILENAMES = ['pox', 'salmonella']
+FILENAMES = ['random_100', 'random_5000']
 
 FILENAMES.each do |file_name|
   file = Bio::FlatFile.open("../database/#{file_name}.fasta")
