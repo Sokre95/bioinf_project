@@ -1,9 +1,11 @@
 require 'bio'
 require 'pry'
 
+DIR_PATH = "../database/outputs"
+
 def prepare_file(file_name)
-  file = Bio::FlatFile.open("../database/outputs_mafft/#{file_name}")
-  upcase_file = File.open("../database/outputs_mafft/upcase/#{file_name}", "w")
+  file = Bio::FlatFile.open("#{DIR_PATH}/#{file_name}")
+  upcase_file = File.open("#{DIR_PATH}/upcase/#{file_name}", "w")
 
   file.entries.each do |fasta_entry|
     sequence = fasta_entry.data.delete("\n").upcase
@@ -19,9 +21,9 @@ def prepare_file(file_name)
   end
 end
 
-system 'mkdir', '-p', "../database/outputs_mafft/upcase/"
+system 'mkdir', '-p', "#{DIR_PATH}/upcase/"
 
-Dir.foreach('../database/outputs_mafft') do |file_name|
+Dir.foreach('#{DIR_PATH}') do |file_name|
   if file_name.split('.').last == 'fasta'
     prepare_file(file_name)
   end
