@@ -14,6 +14,7 @@ std::vector<Sequence*> FastaParser::parse() {
 
     if (!file.good()){
         std::cout << "Error occurred while opening file" << std::endl;
+        std::exit(1);
     }
 
     Sequence *s = new Sequence();
