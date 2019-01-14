@@ -7,6 +7,7 @@
 #include "../include/FastaParser.h"
 #include "../include/Viterbi.h"
 #include "../include/ViterbiLogOdds.h"
+#include "../include/ViterbiLogOddsOptimal.h"
 #include "../include/MleEstimator.h"
 
 //https://github.com/jarro2783/cxxopts
@@ -28,7 +29,7 @@ cxxopts::Options options("bioinf", "Run either with -v [--viterbi] or -e [--esti
 bool print_to_console = false;
 bool write_to_file = true;
 bool multiline = false;
-int line_width = 100;
+int line_width = 80;
 
 int main(int argc, char* argv[]) {
 
@@ -115,7 +116,7 @@ void run_viterbi(std::string file_path) {
     std::map <char, int> lookup_copy(MleEstimator::lookupTable);
 
     std::cout << "Running Viterbi algorithm. Please wait..." << std::endl;
-    auto *logOdds = new ViterbiLogOdds(averaged_transition_probabilities,
+    auto *logOdds = new ViterbiLogOddsOptimal(averaged_transition_probabilities,
                                        emission_probabilities,
                                        lookup_copy, 0.01, true);
 
