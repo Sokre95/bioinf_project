@@ -15,6 +15,8 @@ private:
     const float termination_constant_c;
     const float eta;
 
+    bool printProgress;
+
     float s(char xi, char yj);
 
 public:
@@ -27,7 +29,7 @@ public:
      */
     ViterbiLogOdds(const float *transition_probabilities,  float **emission_probabilities,
                    std::map<char, int> &lookup,
-                   float eta);
+                   float eta, bool printProgress);
 
 
 };

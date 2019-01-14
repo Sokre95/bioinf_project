@@ -21,7 +21,7 @@ void print_aligned_sequences_to_console(std::vector<char> top, std::vector<char>
 void write_aligned_sequences_to_file(std::string file_path, std::vector<char> top, std::vector<char> bottom, bool single_line, int line_width);
 void write_sequence(std::ostream &os, std::vector<char> sequence, bool multiline, int line_width);
 void print_sequences(const std::vector<Sequence *> sequences);
-void print_duration(long duration);
+void print_duration(long durationS, long durationMs);
 
 cxxopts::Options options("bioinf", "Run either with -v [--viterbi] or -e [--estimate] option. Both options can't be used at same time");
 
@@ -117,7 +117,7 @@ void run_viterbi(std::string file_path) {
     std::cout << "Running Viterbi algorithm. Please wait..." << std::endl;
     auto *logOdds = new ViterbiLogOdds(averaged_transition_probabilities,
                                        emission_probabilities,
-                                       lookup_copy, 0.01);
+                                       lookup_copy, 0.01, true);
 
     std::vector<char> top;
     std::vector<char> bottom;
@@ -128,7 +128,8 @@ void run_viterbi(std::string file_path) {
 
     std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
 
-    long duration = std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
+    long durationS = std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
+    long durationMs = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
 
     if(write_to_file){
         write_aligned_sequences_to_file(file_path, top, bottom, multiline, line_width);
@@ -137,7 +138,7 @@ void run_viterbi(std::string file_path) {
         print_aligned_sequences_to_console(top, bottom, line_width);
     }
 
-    print_duration(duration);
+    print_duration(durationS, durationMs);
 }
 
 void load_params(float* averaged_transition_probabilities, float** emission_probabilities) {
@@ -202,9 +203,10 @@ void print_sequences(const std::vector<Sequence *> sequences) {
     }
 }
 
-void print_duration(long duration) {
+void print_duration(long durationS, long durationMs) {
     std::cout << "Sequence alignment finished." << std::endl;
-    std::cout << "Duration: " << duration << std::endl;
+    std::cout << "Duration: " << durationS << " s" << std::endl;
+    std::cout << "Duration: " << durationMs << " ms" << std::endl;
 }
 
 
