@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <iterator>
+#include <bits/stdc++.h>
 
 #include "FastaParser.h"
 #include "Viterbi.h"
@@ -40,23 +41,26 @@ int main(int arg, char* argv[]) {
     }
     else {
         std::cerr << "Wrong option of argument:" << std::endl;
-        std::cerr << "\tOption can be either -v (--viterbi), -e (--estimate) or -h (--help)" << std::endl;
+        print_options();
         std::exit(EXIT_FAILURE);
     }
     return 0;
 }
 
 void run_estimator(std::string path) {
-    auto *mleEstimator = new MleEstimator("../database/outputs_mafft/upcase/");
+    std::cout << "Running estimator, please wait" << std::endl;
+    auto *mleEstimator = new MleEstimator( (char*)path.c_str());
     mleEstimator->estimate();
 
-    std::ofstream params("../params.txt");
+    std::cout << "Writing to params.txt file:" << std::endl;
+    std::ofstream params("./params.txt");
 
     params << "transitions:" << std::endl;
     for(int i = 0; i < 3; i++){
         params << mleEstimator->getAveragedTransitionProbabilities()[i] << "  " << std::flush;
     }
     params << std::endl;
+
     params << "emissions:" << std::endl;
     for(int i = 0; i < 5; i++){
         for(int j= 0; j < 5; j++){
@@ -64,11 +68,14 @@ void run_estimator(std::string path) {
         }
         params << std::endl;
     }
+
     params.close();
+    std::cout << "End" << std::endl;
 }
 
-void run_viterbi(std::string filename) {
-    FastaParser parser("../database/pairs/HIV1_REF_2010/" + filename);
+void run_viterbi(std::string file_path) {
+    std::cout << "Parsing input file..." << std::endl;
+    FastaParser parser(file_path);
     const std::vector<Sequence *> sequences = parser.parse();
 
 #ifdef DEBUG
@@ -77,9 +84,12 @@ void run_viterbi(std::string filename) {
 
     float* averaged_transition_probabilities = new float[3];
     float** emission_probabilities = new float*[5] ;
+    std::cout << "Loading params from params.txt ..." << std::endl;
+
     load_params(averaged_transition_probabilities, emission_probabilities);
     std::map <char, int> lookup_copy(MleEstimator::lookupTable);
 
+    std::cout << "Running Viterbi algorithm..." << std::endl;
     auto *logOdds = new ViterbiLogOdds(averaged_transition_probabilities,
                                        emission_probabilities,
                                        lookup_copy, 0.01);
@@ -99,7 +109,6 @@ void load_params(float* averaged_transition_probabilities, float** emission_prob
     }
     //check header
     std::getline(params, line);
-    std::cout << line << std::endl;
     if (line.compare("transitions:") != 0){
         std::cerr << "Invalid params file" << std::endl;
         std::exit(EXIT_FAILURE);
@@ -152,6 +161,11 @@ void print_sequences(const std::vector<Sequence *> sequences) {
 
 
 void print_options() {
-    std::cout << "Treba opcije nadopisat" << std::endl;
+    std::cout << "Usage:" << std::endl;
+    std::cout << "\tbioinf [options] PATH_TO_FILE_OR_FOLDER:" << std::endl << std::endl;
+    std::cout << "Options" << std::endl;
+    std::cout << "\t-v [--viterbi] \t\t# Run sequence align algorithm on given pair in fasta file specified by PATH_TO_FILE_OR_FOLDER" << std::endl;
+    std::cout << "\t-e [--estimate]\t\t# Run hmm params estimator with path to learning database specified by PATH_TO_FILE_OR_FOLDER" << std::endl;
+    std::cout << "\t-h [--help]    \t\t# Show help" << std::endl;
 }
 
