@@ -21,34 +21,54 @@ void print_aligned_sequences_to_console(std::vector<char> top, std::vector<char>
 void write_aligned_sequences_to_file(std::string file_path, std::vector<char> top, std::vector<char> bottom, bool single_line, int line_width);
 void write_sequence(std::ostream &os, std::vector<char> sequence, bool single_line, int line_width);
 void print_sequences(const std::vector<Sequence *> sequences);
-void print_options();
 void print_duration(long duration);
 
-int main(int arg, char* argv[]) {
+cxxopts::Options options("bioinf", "Run either with -v [--viterbi] or -e [--estimate] option. Both options can't be used at same time");
 
-    if(arg < 2 || arg > 3){
+bool print_to_console = false;
+bool write_to_file = true;
+bool multiple = false;
+int line_width = 100;
+
+int main(int argc, char* argv[]) {
+
+    options.add_options("OPTIONS")
+            ("v,viterbi", "# Run sequence alignment algorithm on sequence pair given in fasta file specified by <arg> path", cxxopts::value<std::string>())
+            ("e,estimate", "# Run HMM parameters estimator with path to directory holding learning database specified by <arg> path. Calculated parameters are stored in ./params.txt file", cxxopts::value<std::string>())
+            ("o,out", "# [Use only with -v option] Write aligned sequences to ./aligned/{pair_file_name}.fasta", cxxopts::value<std::string>()->default_value("true"))
+            ("c,console" ,"# [Use only with -v option] Print aligned sequences to console")
+            ("m,multiline", "# [Use only with -v option] Write/Print aligned sequences in multiple lines, each line containg N chars", cxxopts::value<int>()->implicit_value("100"), "N")
+            ("h,help", "# Show help");
+
+    auto result = options.parse(argc, argv);
+
+    if(argc < 1){
         std::cerr << "Wrong number of arguments" << std::endl;
-        print_options();
+        std::cout << options.help() << std::endl;
         std::exit(EXIT_FAILURE);
     }
-
-    std::string option(argv[1]);
-
-    if( option == "-v" || option == "--viterbi"){
-        std::string pair_file_path(argv[2]);
-        run_viterbi(pair_file_path);
+    if (result.count("viterbi") > 0){
+        std::string file_path = result["viterbi"].as<std::string>();
+        if(result.count("out") > 0){
+           if (result["out"].as<std::string>() == "false"){
+               write_to_file = false;
+           }
+        }
+        if(result.count("console") > 0){
+            print_to_console = true;
+        }
+        if(result.count("multiline") > 0){
+            line_width = result["multiline"].as<int>();
+            multiple = true;
+        }
+        run_viterbi(file_path);
     }
-    else if (option == "-e" || option == "--estimate"){
-        std::string path(argv[2]);
-        run_estimator(path);
+    else if(result.count("estimate") > 0){
+        std::string directory_path = result["estimate"].as<std::string>();
+        run_estimator(directory_path);
     }
-    else if (option == "-h" || option == "--help"){
-        print_options();
-    }
-    else {
-        std::cerr << "Wrong option of argument:" << std::endl;
-        print_options();
-        std::exit(EXIT_FAILURE);
+    else{
+        std::cout << options.help() << std::endl;
     }
     return 0;
 }
@@ -89,12 +109,12 @@ void run_viterbi(std::string file_path) {
 
     float* averaged_transition_probabilities = new float[3];
     float** emission_probabilities = new float*[5] ;
-    std::cout << "Loading params from params.txt ..." << std::endl;
+    std::cout << "Loading params from params.txt..." << std::endl;
 
     load_params(averaged_transition_probabilities, emission_probabilities);
     std::map <char, int> lookup_copy(MleEstimator::lookupTable);
 
-    std::cout << "Running Viterbi algorithm..." << std::endl;
+    std::cout << "Running Viterbi algorithm. Please wait..." << std::endl;
     auto *logOdds = new ViterbiLogOdds(averaged_transition_probabilities,
                                        emission_probabilities,
                                        lookup_copy, 0.01);
@@ -110,9 +130,12 @@ void run_viterbi(std::string file_path) {
 
     long duration = std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
 
-    write_aligned_sequences_to_file(file_path, top, bottom, false, 80);
-
-    print_aligned_sequences_to_console(top, bottom, 200);
+    if(write_to_file){
+        write_aligned_sequences_to_file(file_path, top, bottom, multiple, line_width);
+    }
+    if(print_to_console){
+        print_aligned_sequences_to_console(top, bottom, line_width);
+    }
 
     print_duration(duration);
 }
@@ -179,22 +202,6 @@ void print_sequences(const std::vector<Sequence *> sequences) {
     }
 }
 
-void print_options() {
-    std::cout << "Usage:" << std::endl;
-    std::cout << "\tbioinf [options] PATH_TO_FILE_OR_FOLDER:" << std::endl << std::endl;
-
-    std::cout << "Options" << std::endl;
-    std::cout << "\t-v          [--viterbi]               \t# Run sequence align algorithm on given pair in fasta file specified by PATH_TO_FILE_OR_FOLDER" << std::endl;
-    std::cout << "\t-e          [--estimate]              \t# Run hmm params estimator with path to learning database specified by PATH_TO_FILE_OR_FOLDER" << std::endl;
-    std::cout << "\t-o=<path>   [--out=<path>]            \t# [Use only with -v option] Write aligned sequences to file specified by <path>" << std::endl;
-    std::cout << "\t-m=N        [--multiline=N_CHARS]     \t# [Use only with -v option] Write aligned sequences in multiple lines, each line containg N chars. Default mode is single line writing" << std::endl;
-    std::cout << "\t-h          [--help]                  \t# Show help" << std::endl << std::endl;
-
-    std::cout << "Examples:" << std::endl;
-    std::cout << "\t ./bioinf --viterbi ../database/pairs/HIV/p1.fasta" << std::endl;
-
-}
-
 void print_duration(long duration) {
     std::cout << "Sequence alignment finished." << std::endl;
     std::cout << "Duration: " << duration << std::endl;
@@ -216,7 +223,7 @@ void write_aligned_sequences_to_file(std::string file_path, std::vector<char> to
         std::exit(EXIT_FAILURE);
     }
 
-    std::cout << "Writing output to file: " + directory_path + file_name << std::endl;
+    std::cout << "Writing aligned sequences to file: " + directory_path + file_name << std::endl;
 
     aligned << ">" << file_name + "_top" << std::endl;
     write_sequence(aligned, top, single_line, line_width);
