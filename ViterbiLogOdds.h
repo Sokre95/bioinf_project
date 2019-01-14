@@ -18,7 +18,7 @@ private:
     float s(char xi, char yj);
 
 public:
-    void alignSequences(Sequence *first, Sequence *second) override;
+    void alignSequences(Sequence *first, Sequence *second, std::vector<char>* top, std::vector<char>* bottom) override;
 
     ViterbiLogOdds(const float *transition_probabilities,  float **emission_probabilities,
                    std::map<char, int> &lookup,

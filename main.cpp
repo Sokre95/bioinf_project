@@ -18,6 +18,8 @@ void load_params(float* averaged_transition_probabilities, float** emission_prob
 void print_sequences(const std::vector<Sequence *> sequences);
 void print_options();
 
+void print(long duration);
+
 int main(int arg, char* argv[]) {
 
     if(arg < 2 || arg > 3){
@@ -94,7 +96,64 @@ void run_viterbi(std::string file_path) {
                                        emission_probabilities,
                                        lookup_copy, 0.01);
 
-    logOdds->alignSequences(sequences.at(0), sequences.at(1));
+    std::vector<char> top;
+    std::vector<char> bottom;
+
+    std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+
+    logOdds->alignSequences(sequences.at(0), sequences.at(1), &top, &bottom);
+
+    std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+
+    long duration = std::chrono::duration_cast<std::chrono::seconds>(t2 - t1).count();
+
+    // ispis...
+
+    /* for (auto it = top.rbegin(); it != top.rend(); ++it) {
+         std::cout << *it << std::flush;
+     }
+
+     std::cout << std::endl;
+
+     for (auto it = bottom.rbegin(); it != bottom.rend(); ++it) {
+         std::cout << *it << std::flush;
+     } */
+
+    const int line_width = 80;
+    ulong curr = top.size() - 1;
+
+    bool isEnd;
+
+    while (curr > 0) {
+        int i;
+        for (i = 0; i < line_width; i++) {
+            if (curr == 0) {
+                isEnd = true;
+                break;
+            }
+            curr--;
+            std::cout << top.at(curr) << std::flush;
+        }
+
+        std::cout << std::endl;
+
+        if (isEnd) {
+            curr += i;
+        } else {
+            curr += line_width - 1;
+        }
+
+        for (i = 0; i < line_width; i++) {
+            if (curr == 0) break;
+            curr--;
+            std::cout << bottom.at(curr) << std::flush;
+        }
+
+        std::cout << std::endl;
+        std::cout << std::endl;
+    }
+
+    print(duration);
 }
 
 void load_params(float* averaged_transition_probabilities, float** emission_probabilities) {
@@ -159,7 +218,6 @@ void print_sequences(const std::vector<Sequence *> sequences) {
     }
 }
 
-
 void print_options() {
     std::cout << "Usage:" << std::endl;
     std::cout << "\tbioinf [options] PATH_TO_FILE_OR_FOLDER:" << std::endl << std::endl;
@@ -169,3 +227,7 @@ void print_options() {
     std::cout << "\t-h [--help]    \t\t# Show help" << std::endl;
 }
 
+void print(long duration) {
+    std::cout << "Sequence alignment finished." << std::endl;
+    std::cout << "Duration: " << duration << std::endl;
+}

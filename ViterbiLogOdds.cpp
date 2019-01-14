@@ -32,7 +32,7 @@ T **create2dArray(ulong n, ulong m) {
 }
 
 
-void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
+void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second, std::vector<char>* top, std::vector<char>* bottom) {
     const std::vector<char> &first_sequence = first->getSequence();
     const std::vector<char> &second_sequence = second->getSequence();
 
@@ -134,33 +134,29 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
     } else {
         trans = transitions_y;
     }
-    std::vector<char> top;
-    std::vector<char> bottom;
-    std::vector<char> states;
 
     // ove dolje korake moramo ponavljat sve dok ne dobijemo ukupnu sekvencu stanja
     while (i > 0 && j > 0) {
         // dohvati vrijednost polja
         char state = trans[i][j]; //arr_get(trans, i, j, n);
-        states.push_back(state);
 
         // iz nekog razloga mi switch neda da koristim M,X,Y
         // ovisno o stanju radimo odma poravnanje
         switch (state) {
             case 1: // M
-                top.push_back(first_sequence.at(i));
-                bottom.push_back(second_sequence.at(j));
+                top->push_back(first_sequence.at(i));
+                bottom->push_back(second_sequence.at(j));
                 j = j - 1;
                 i = i - 1;
                 break;
             case 2: // X --> emitira stanje xi,-
-                top.push_back(first_sequence.at(i));
-                bottom.push_back(gap);
+                top->push_back(first_sequence.at(i));
+                bottom->push_back(gap);
                 i = i - 1;
                 break;
             case 3: // Y --> emitira stanje -,yj
-                top.push_back(gap);
-                bottom.push_back(second_sequence.at(j));
+                top->push_back(gap);
+                bottom->push_back(second_sequence.at(j));
                 j = j - 1;
                 break;
         }
@@ -168,18 +164,8 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second) {
         trans = transitions_lookup[state]; // iz onoga sta je zapisano u polju odredujemo sljedecu tablicu
     }
 
-    top.push_back(first_sequence.at(0));
-    bottom.push_back(second_sequence.at(0));
-
-    for (auto it = top.rbegin(); it != top.rend(); ++it) {
-        std::cout << *it << std::flush;
-    }
-
-    std::cout << std::endl;
-
-    for (auto it = bottom.rbegin(); it != bottom.rend(); ++it) {
-        std::cout << *it << std::flush;
-    }
+    top->push_back(first_sequence.at(0));
+    bottom->push_back(second_sequence.at(0));
 
     delete[] viterbi_match;
     delete[] viterbi_insert_x;
