@@ -31,7 +31,6 @@ T **create2dArray(ulong n, ulong m) {
     return array;
 }
 
-
 void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second, std::vector<char>* top, std::vector<char>* bottom) {
     const std::vector<char> &first_sequence = first->getSequence();
     const std::vector<char> &second_sequence = second->getSequence();
@@ -75,6 +74,10 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second, std::vect
     float maxVal;
 
     for (ulong i = 1; i < n + 1; i++) {
+        if (this->printProgress && i % 14 == 0) {
+            std::cout << "\r" << i << "/" << n << " lines processed" << std::flush;
+        }
+
         for (ulong j = 1; j < m + 1; j++) {
             if (i == 1 && j == 1) continue;
             float vm = viterbi_match[i - 1][j - 1];
@@ -180,9 +183,9 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second, std::vect
 ViterbiLogOdds::ViterbiLogOdds(
         const float *transition_probabilities,
         float **emission_probabilities,
-        std::map<char, int> &lookup, const float eta)
+        std::map<char, int> &lookup, const float eta, bool printProgress)
         : IViterbi(transition_probabilities, emission_probabilities, lookup),
           eta(eta),
           termination_constant_c(std::log(1 - 2 * transition_probabilities[0] - transition_probabilities[1])
-                                 - std::log(1 - transition_probabilities[2] - transition_probabilities[1])) {
+                                 - std::log(1 - transition_probabilities[2] - transition_probabilities[1])), printProgress(printProgress) {
 }
