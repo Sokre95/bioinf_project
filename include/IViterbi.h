@@ -25,9 +25,15 @@ protected:
 
 
 public:
-    // pure virtual function providing interface framework.
+
+    /*
+     * Aligns two sequences using the pairwise Hidden Markov Model.
+     */
     virtual void alignSequences(Sequence *first, Sequence *second, std::vector<char>* top, std::vector<char>* bottom) = 0;
 
+    /*
+     * Creates an instance of Viterbi algorithm (we can use log-odds or classic viterbi implementation)
+     */
     IViterbi(const float *transition_probabilities, float **emission_probabilities,
              std::map<char, int> &lookup) :
             emission_probabilities(emission_probabilities), transition_probabilities(transition_probabilities),
@@ -36,6 +42,7 @@ public:
     }
 
 protected:
+
     float max(float v1, float v2, byte first, byte second, byte *result) {
         if (v1 > v2) {
             *result = first;
@@ -45,6 +52,7 @@ protected:
         *result = second;
         return v2;
     };
+
 
     float max(float m, float x, float y, byte *result) {
         float max = this->max(m, x, M, X, result);
