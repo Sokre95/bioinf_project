@@ -290,13 +290,13 @@ Kada smo završili s forward dijelom algoritma, odnosno kada su nam sve struktur
 \captionof{table}{Vizualizacija pronalaska optimalnog poravnanja} \label{tab:title} 
   \begin{tabular}{ | >{\columncolor[gray]{0.8}}c | c | c | c |c  | c | c | c |}
     \hline
-      0 & 1 & 2 & 3 & ...&m-1  & m\\ \hline
+      0 & 1 & 2 & 3 & ...& ... & m-1  & m\\ \hline
       0 & $V^{\sbullet[.75]}(0,0)$ \tikzmark{d}   & &  &   &  & &   \\ \hline
       1 &  &$V^{\sbullet[.75]}(1,1)$ \tikzmark{c}  &  &   &  &  & \\ \hline
       2 &  & &  &  &  &   &\\ \hline
       3 &  & &  &   &     & &  \\ \hline
-      ... &  & &  &   &  & &   \\ \hline
-      n-1 &  & &  & ...  & & $V^{\sbullet[.75]}(n-1,m-1)$ \tikzmark{b}&   \\ \hline
+      ... &  & &  &   & ...  & ... &    \\ \hline
+      n-1 &  & &  &   & ... & $V^{\sbullet[.75]}(n-1,m-1)$ \tikzmark{b}&   \\ \hline
       n &  & &  &   &  &  & $V^{\sbullet[.75]}(n,m)$ \tikzmark{a}\\ \hline
             
    
@@ -394,7 +394,7 @@ Rezultati izvođenja algoritma dani su u tablici ispod:
 
 \begin{table}[H]
 \centering
-\begin{tabular}{|c||p{3.9cm}|c|p{4.25cm}|c|p{1.45cm}|p{1.5cm}|}
+\begin{tabular}{|c||p{3.9cm}|c|p{4.25cm}|c|p{1.cm}|p{1.5cm}|}
 \hline
 \# & \textit{\textbf{Sekvenca 1}} & \textit{\textbf{Duljina}} & \textit{\textbf{Sekvenca 2}} & \textit{\textbf{Duljina}} & \textit{\textbf{Vrijeme izvođenja}} & \textit{\textbf{Max utrošak memorije}} \\ \hline
 1 & AF086833.2 Ebola virus - Mayinga, Zaire, 1976, complete genome & 18959 & JF828358.1 Lloviu virus strain MS-Liver-86/2003, complete genome & 18927 & 4,9 min / 297 s & 5 GiB \\ \hline
