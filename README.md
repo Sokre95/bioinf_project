@@ -23,6 +23,7 @@ Main goal of this project is implementation of an algorithm for pairwise sequenc
   ```
   Build `bioinf` executable
   ```
+  cmake ../
   make
   ```
 ## Usage
