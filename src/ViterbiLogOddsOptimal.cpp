@@ -196,6 +196,8 @@ void ViterbiLogOddsOptimal::alignSequences(Sequence *first, Sequence *second, st
     delete[] transitions_m;
     delete[] transitions_x;
     delete[] transitions_y;
+
+    std::cout << std::endl;
 }
 
 

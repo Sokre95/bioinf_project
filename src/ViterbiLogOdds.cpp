@@ -177,6 +177,8 @@ void ViterbiLogOdds::alignSequences(Sequence *first, Sequence *second, std::vect
     delete[] transitions_m;
     delete[] transitions_x;
     delete[] transitions_y;
+
+    std::cout << std::endl;
 }
 
 
